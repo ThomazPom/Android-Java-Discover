@@ -24,7 +24,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="Name"
             android:ems="10"
             android:id="@+id/editTextNom"
             android:layout_marginTop="21dp"
@@ -32,21 +31,18 @@
             android:layout_alignLeft="@+id/editTextPrenom"
             android:layout_alignStart="@+id/editTextPrenom"
             android:layout_weight="1"
-            android:drawableLeft="@mipmap/ic_launcher" />
+            android:hint="Votre Nom"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="Votre prénom"
             android:ems="10"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="12dp"
             android:id="@+id/editTextPrenom"
-            android:layout_weight="1"
-            android:drawableLeft="@mipmap/ic_launcher" />
-
+            android:layout_weight="1"/>
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
