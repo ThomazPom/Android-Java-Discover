@@ -8,7 +8,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="fr.unice.mbds.androiddevdiscoverlb.enregitrerActivity">
+    tools:context="fr.unice.mbds.androiddevdiscoverlb.enregitrerActivity"
+    android:onClick="lost_focus_enregistrer">
 
     <LinearLayout
         android:orientation="vertical"
@@ -126,14 +127,19 @@
             android:layout_height="50dp" />
 
         <Button
-            android:text="S'enregistrer"
+            android:text="S'enregister"
+            android:id="@+id/Save"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/buttonEnregistrer"
-            android:layout_weight="1"
             style="@style/Widget.AppCompat.Button.Colored"
-            android:elevation="3dp"
-            android:background="@android:color/holo_blue_dark" />
+            android:background="@android:color/holo_blue_bright"
+            android:textAllCaps="false"
+            android:fontFamily="sans-serif-medium"
+            android:layout_height="40dp"
+            android:layout_marginTop="77dp"
+            android:layout_below="@+id/textView2"
+            android:layout_centerHorizontal="true"
+            android:onClick="onClickEnregistrer"
+            android:layout_weight="1" />
 
     </LinearLayout>
 
