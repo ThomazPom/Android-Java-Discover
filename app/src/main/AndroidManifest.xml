@@ -15,7 +15,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".enregitrerActivity"></activity>
+        <activity
+            android:name=".enregitrerActivity"
+            android:parentActivityName="fr.unice.mbds.androiddevdiscoverlb.MainActivity">
+        </activity>
     </application>
 
 </manifest>
