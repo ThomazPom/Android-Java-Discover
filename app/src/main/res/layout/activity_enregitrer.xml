@@ -31,7 +31,8 @@
             android:layout_below="@+id/editTextPrenom"
             android:layout_alignLeft="@+id/editTextPrenom"
             android:layout_alignStart="@+id/editTextPrenom"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:drawableLeft="@mipmap/ic_launcher" />
 
         <EditText
             android:layout_width="match_parent"
@@ -43,7 +44,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="12dp"
             android:id="@+id/editTextPrenom"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:drawableLeft="@mipmap/ic_launcher" />
 
         <RadioGroup
             android:layout_width="match_parent"
