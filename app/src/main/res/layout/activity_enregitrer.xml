@@ -31,7 +31,8 @@
             android:layout_alignLeft="@+id/editTextPrenom"
             android:layout_alignStart="@+id/editTextPrenom"
             android:layout_weight="1"
-            android:hint="Votre Nom"/>
+            android:hint="Votre Nom"
+            android:drawableLeft="@mipmap/profile" />
 
         <EditText
             android:layout_width="match_parent"
@@ -42,25 +43,28 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="12dp"
             android:id="@+id/editTextPrenom"
-            android:layout_weight="1"/>
-        <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="17dp"
             android:layout_weight="1"
-            android:layout_below="@+id/editTextNom"
-            android:layout_centerHorizontal="true">
+            android:hint="Votre prénom"
+            android:drawableLeft="@mipmap/profile" />
 
-            <LinearLayout
-                android:orientation="horizontal"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <RadioGroup
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/radioGroup3"
-                android:layout_centerHorizontal="true">
+                android:layout_height="match_parent"
+                android:layout_marginTop="17dp"
+                android:layout_weight="1"
+                android:layout_below="@+id/editTextNom"
+                android:layout_centerHorizontal="true"
+                android:baselineAligned="true">
 
                 <RadioButton
                     android:text="Mascunlin"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/radioButtonMasculin"
                     android:layout_weight="1"
@@ -80,9 +84,8 @@
                     android:layout_alignEnd="@+id/editTextNom"
                     android:checked="false" />
 
-            </LinearLayout>
-
-        </RadioGroup>
+            </RadioGroup>
+        </LinearLayout>
 
         <EditText
             android:layout_width="match_parent"
@@ -91,7 +94,8 @@
             android:ems="10"
             android:id="@+id/editTextTelephone"
             android:layout_weight="1"
-            android:hint="Numéro de téléphone" />
+            android:hint="Numéro de téléphone"
+            android:drawableLeft="@mipmap/phone" />
 
         <EditText
             android:layout_width="match_parent"
@@ -100,7 +104,8 @@
             android:ems="10"
             android:id="@+id/editTextEmail"
             android:layout_weight="1"
-            android:hint="Adresse e-mail" />
+            android:hint="Adresse e-mail"
+            android:drawableLeft="@mipmap/email" />
 
         <EditText
             android:layout_width="match_parent"
@@ -109,7 +114,8 @@
             android:ems="10"
             android:id="@+id/editTextMDP1"
             android:layout_weight="1"
-            android:hint="Mot de passe" />
+            android:hint="Mot de passe"
+            android:drawableLeft="@mipmap/password" />
 
         <EditText
             android:layout_width="match_parent"
@@ -118,7 +124,8 @@
             android:ems="10"
             android:id="@+id/editTextMDP2"
             android:layout_weight="1"
-            android:hint="Confirmation du mot de passe" />
+            android:hint="Confirmation du mot de passe"
+            android:drawableLeft="@mipmap/password" />
 
         <Button
             android:text="S'enregister"
