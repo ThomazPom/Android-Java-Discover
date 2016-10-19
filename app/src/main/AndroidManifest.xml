@@ -23,6 +23,10 @@
             android:name=".connexionActivity"
             android:parentActivityName="fr.unice.mbds.androiddevdiscoverlb.MainActivity">
         </activity>
+        <activity
+            android:name=".rightAccessActivity"
+            android:parentActivityName="fr.unice.mbds.androiddevdiscoverlb.connexionActivity">
+        </activity>
     </application>
 
 </manifest>
