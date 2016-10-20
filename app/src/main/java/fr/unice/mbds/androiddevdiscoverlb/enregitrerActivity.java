@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import java.util.ArrayList;
+
 import utils.ValidateFields;
 
 public class enregitrerActivity extends AppCompatActivity {
@@ -20,7 +22,7 @@ public class enregitrerActivity extends AppCompatActivity {
 
         mdp1.setTag(mdp2);
         mdp2.setTag(mdp1);
-        ValidateFields validator = new ValidateFields();
+        ValidateFields validator = new ValidateFields(new ArrayList<View>());
 
         validator.verifyOnFocusChangeListener(this.findViewById(R.id.editTextNom));
 

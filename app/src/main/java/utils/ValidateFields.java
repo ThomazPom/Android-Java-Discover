@@ -6,6 +6,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import fr.unice.mbds.androiddevdiscoverlb.R;
 
 /**
@@ -16,9 +20,46 @@ public class ValidateFields {
 
     // Toast viewToast = Toast.makeText();
 
+    List<View>views2Lock;
+    HashMap<View,Boolean>validateViews;
+    static int ERROR_TAG = 200;
+    public ValidateFields(List<View> views2Lock)
+    {
+        this.validateViews =new HashMap<>();
+        this.views2Lock=views2Lock;
+
+    }
+    private boolean lockviews(boolean lock, View currentView)
+    {
+        this.validateViews.put(currentView,lock);
+        if(validateViews.containsValue(true)){
+
+                for(View v : views2Lock){
+                    v.setEnabled(false);
+                }
+            return false; //return : are view enabled? true / false
+            }
+        for(View v : views2Lock){
+            v.setEnabled(true);
+        }
+        return  true; //return : are view enabled? true / false
+
+
+    }
+
     public void verifyOnFocusChangeListener(final View view) {
         Log.d(this.getClass().getName(), "verifyOnFocusChangeListener");
-        final EditText editText = (EditText) view;
+        try {
+            verifyOnFocusChangeListener((EditText) view);
+        }
+        catch(Exception e)
+        {
+            Log.d(this.getClass().getName(), "Type de vue en entrée non supporté");
+        }
+    }
+    public void verifyOnFocusChangeListener(final EditText editText) {
+        Log.d(this.getClass().getName(), "verifyOnFocusChangeListener/EditText");
+
         View.OnFocusChangeListener onFocusChangeListener = new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -35,10 +76,17 @@ public class ValidateFields {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
                         if (!hasFocus) {
-                            editText.setError(null);
                             if (!validateName(editText.getText().toString())) {
                                 editText.setError("Le nom renseigné n'est pas valide");
                                 //Toast.makeText(editText.getContext(), "Il est obligatoire de fournir un nom valide", Toast.LENGTH_SHORT).show();
+
+                                lockviews(true,editText);
+                            }
+                            else
+                            {
+
+                                editText.setError(null);
+                                lockviews(false,editText);
                             }
                         }
                         Log.d(this.getClass().getName(), " event :" + InputType.TYPE_TEXT_VARIATION_PERSON_NAME + " " + InputType.TYPE_CLASS_TEXT);
@@ -52,21 +100,32 @@ public class ValidateFields {
                     public void onFocusChange(View v, boolean hasFocus) {
 
                         if (!hasFocus) {
-                            editText.setError(null);
                             EditText mirrorPw = (EditText) v.getTag();
                             if (mirrorPw != null) {
                                 if (!mirrorPw.getText().toString().equals(editText.getText().toString())) {
                                     // Toast.makeText(editText.getContext(), "Les mot de passe ne correspondent pas", Toast.LENGTH_SHORT).show();
                                     editText.setError("Les mot de passe ne correspondent pas");
+                                    lockviews(true,editText);
                                 }
-                                else if (editText.getText().length()==0)
+                                else if (editText.getText().toString().isEmpty())
                                 {
-
+                                    lockviews(true,editText);
                                     editText.setError("Aucun mot de passe n'a été renseigné");
                                 }
+                                else
+                                {
+                                    editText.setError(null);
+                                    lockviews(false,editText);
+                                }
 
-                            } else {
+                            } else if(editText.getText().toString().isEmpty()) {
+                                lockviews(true,editText);
                                 editText.setError("Aucun mot de passe n'a été renseigné");
+                            }
+                            else
+                            {
+                                editText.setError(null);
+                                lockviews(false,editText);
                             }
                         }
 
@@ -79,10 +138,18 @@ public class ValidateFields {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
                         if (!hasFocus) {
-                            editText.setError(null);
                             if(editText.getText().length() != 10) {
                                 editText.setError("Merci de renseigner un numéro de téléphone français à 10 chiffres");
-                            }//   Toast.makeText(editText.getContext(), "Il est obligatoire de fournir un # de téléphone valide", Toast.LENGTH_SHORT).show();
+                                lockviews(true,editText);
+                                //   Toast.makeText(editText.getContext(), "Il est obligatoire de fournir un # de téléphone valide", Toast.LENGTH_SHORT).show();
+
+                            }
+
+                            else
+                            {
+                                editText.setError(null);
+                                lockviews(false,editText);
+                            }
                         }
                         Log.d(this.getClass().getName(), " event :" + InputType.TYPE_CLASS_PHONE);
                     }
@@ -95,9 +162,14 @@ public class ValidateFields {
 
                         if (!hasFocus)
                         {
-                            editText.setError(null);
                             if (!isValidEmailAddress(editText.getText().toString())) {
+                                lockviews(true,editText);
                                 editText.setError("L'email fourni n'est pas valide");
+                            }
+                            else {
+
+                                editText.setError(null);
+                                lockviews(false,editText);
                             }
 
                             //Toast.makeText(editText.getContext(), "Il est obligatoire de fournir un email valide", Toast.LENGTH_SHORT).show();
