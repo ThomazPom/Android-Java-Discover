@@ -30,7 +30,7 @@ public class enregitrerActivity extends AppCompatActivity {
 
         lockviews.add(this.findViewById(R.id.Save));
 
-        ValidateFields validator = new ValidateFields(lockviews,true);
+        ValidateFields validator = new ValidateFields(this,lockviews,true);
         validator.verifyOnFocusChangeListener(this.findViewById(R.id.editTextNom));
         validator.verifyOnFocusChangeListener(this.findViewById(R.id.editTextPrenom));
         validator.verifyOnFocusChangeListener(this.findViewById(R.id.editTextTelephone));

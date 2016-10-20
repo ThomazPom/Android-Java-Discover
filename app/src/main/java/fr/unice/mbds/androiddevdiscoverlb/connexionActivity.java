@@ -24,7 +24,7 @@ public class connexionActivity extends AppCompatActivity {
         mailConnexionTF = (EditText) this.findViewById(R.id.mailConnexionTF);
         mdpConnexionTF = (EditText) this.findViewById(R.id.mdpConnexionTF);
 
-        ValidateFields validate = new ValidateFields(Arrays.asList(new View[]{this.findViewById(R.id.SaveLogin)}),true);
+        ValidateFields validate = new ValidateFields(this,Arrays.asList(new View[]{this.findViewById(R.id.SaveLogin)}),true);
 
         validate.verifyOnFocusChangeListener(this.findViewById(R.id.mailConnexionTF));
 
@@ -33,11 +33,6 @@ public class connexionActivity extends AppCompatActivity {
 
     public void lost_focus_connexion(View v)
     {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
     }
 
     public void onClickConnexionButton(View v) {
