@@ -23,7 +23,6 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/editTextNom"
             android:layout_marginTop="21dp"
@@ -32,12 +31,13 @@
             android:layout_alignStart="@+id/editTextPrenom"
             android:layout_weight="1"
             android:hint="Votre Nom"
-            android:drawableLeft="@mipmap/profile" />
+            android:drawableLeft="@mipmap/profile"
+            android:inputType="text|textPersonName" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
+            android:inputType="text|textPersonName"
             android:ems="10"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
