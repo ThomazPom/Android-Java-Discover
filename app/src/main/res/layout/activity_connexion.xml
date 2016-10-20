@@ -42,7 +42,7 @@
 
         <Button
             android:text="Se connecter"
-            android:id="@+id/Save"
+            android:id="@+id/SaveLogin"
             android:layout_width="match_parent"
             style="@style/Widget.AppCompat.Button.Colored"
             android:background="@android:color/holo_blue_bright"

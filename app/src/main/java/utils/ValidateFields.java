@@ -23,14 +23,18 @@ public class ValidateFields {
     List<View>views2Lock;
     HashMap<View,Boolean>validateViews;
     static int ERROR_TAG = 200;
-    public ValidateFields(List<View> views2Lock)
+    public ValidateFields(List<View> views2Lock,boolean lockdefault)
     {
         this.validateViews =new HashMap<>();
         this.views2Lock=views2Lock;
 
+        for(View v : views2Lock){
+            v.setEnabled(!lockdefault);
+        }
     }
     private boolean lockviews(boolean lock, View currentView)
     {
+        Log.d(this.getClass().getName(),views2Lock.toString());
         this.validateViews.put(currentView,lock);
         if(validateViews.containsValue(true)){
 

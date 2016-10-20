@@ -3,10 +3,12 @@ package fr.unice.mbds.androiddevdiscoverlb;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import utils.ValidateFields;
 
@@ -22,14 +24,16 @@ public class enregitrerActivity extends AppCompatActivity {
 
         mdp1.setTag(mdp2);
         mdp2.setTag(mdp1);
-        ValidateFields validator = new ValidateFields(new ArrayList<View>());
 
+
+        ArrayList<View> lockviews = new ArrayList<>();
+
+        lockviews.add(this.findViewById(R.id.Save));
+
+        ValidateFields validator = new ValidateFields(lockviews,true);
         validator.verifyOnFocusChangeListener(this.findViewById(R.id.editTextNom));
-
         validator.verifyOnFocusChangeListener(this.findViewById(R.id.editTextPrenom));
-
         validator.verifyOnFocusChangeListener(this.findViewById(R.id.editTextTelephone));
-
         validator.verifyOnFocusChangeListener(this.findViewById(R.id.editTextEmail));
         validator.verifyOnFocusChangeListener(mdp1);
         validator.verifyOnFocusChangeListener(mdp2);

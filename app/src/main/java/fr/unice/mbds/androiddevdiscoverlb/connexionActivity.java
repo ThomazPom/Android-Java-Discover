@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import java.util.Arrays;
+
+import utils.ValidateFields;
+
 public class connexionActivity extends AppCompatActivity {
     EditText mailConnexionTF;
     EditText mdpConnexionTF;
@@ -19,6 +23,12 @@ public class connexionActivity extends AppCompatActivity {
 
         mailConnexionTF = (EditText) this.findViewById(R.id.mailConnexionTF);
         mdpConnexionTF = (EditText) this.findViewById(R.id.mdpConnexionTF);
+
+        ValidateFields validate = new ValidateFields(Arrays.asList(new View[]{this.findViewById(R.id.SaveLogin)}),true);
+
+        validate.verifyOnFocusChangeListener(this.findViewById(R.id.mailConnexionTF));
+
+        validate.verifyOnFocusChangeListener(this.findViewById(R.id.mdpConnexionTF));
     }
 
     public void lost_focus_connexion(View v)
