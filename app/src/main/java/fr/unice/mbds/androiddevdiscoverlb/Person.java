@@ -83,14 +83,6 @@ public class Person {
 
     public Person(String email, String nom, String prenom, String sexe, String tel, String password,Person p){
 
-       /* HashMap<String,String> h = new HashMap<String,String>();
-        h.put("MAIL",mail);
-        h.put("NOM",nom);
-        h.put("PRENOM",prenom);
-        h.put("SEXE",sexe);
-        h.put("TELEPHONE",tel);
-        h.put("PASSWORD",password);*/
-
         this.nom = nom;
         this.prenom = prenom;
         this.sexe = sexe;
