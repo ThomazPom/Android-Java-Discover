@@ -64,8 +64,31 @@ public class enregitrerActivity extends AppCompatActivity {
     public void enregistrerOnCick(View view){
 
     }
+    ProgressDialog progressDialog;
+    public void showProgressDialog(boolean isVisible) {
+        if (isVisible) {
+            if(progressDialog==null) {
+                progressDialog = new ProgressDialog(this);
+                progressDialog.setMessage(this.getResources().getString(R.string.please_wait));
+                progressDialog.setCancelable(false);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        progressDialog = null;
+                    }
+                });
+                progressDialog.show();
+            }
+        }
+        else {
+            if(progressDialog!=null) {
+                progressDialog.dismiss();
+            }
+        }
+    }
 
-     abstract class RegisterTask extends AsyncTask<Person,Void,Person> {
+    class RegisterTask extends AsyncTask<Person,Void,Person> {
 
          protected Person doInBackground(Person... people) {
              String url = "http://95.142.161.35:1337/person/";
@@ -114,22 +137,18 @@ public class enregitrerActivity extends AppCompatActivity {
              return null;
          }
 
-         @Override
-         protected void onPreExecute() {
-             super.onPreExecute();
-             //Afficher un loading "Patientez, inscription en cours..."
-         }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgressDialog(true);
+        }
 
-         @Override
-         protected void onPostExecute(Person person) {
-             super.onPostExecute(person);
-             //Enlever le loading
-             //Traiter la person
-             if (person != null) {
-             } else {
-             }
-             //Renvoyer vers le login
-             //Fermer l'activité Enregistrer
-         }
+        @Override
+        protected void onPostExecute(Person person) {
+            super.onPostExecute(person);
+            showProgressDialog(false);
+            Toast.makeText(enregitrerActivity.this,R.string.inscription_ok, Toast.LENGTH_LONG).show();
+        }
      }
+
 }

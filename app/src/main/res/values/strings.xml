@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TP Android</string>
+    <string name="please_wait">Please Wait</string>
+    <string name="inscription_ok">Inscription reussie</string>
 </resources>
