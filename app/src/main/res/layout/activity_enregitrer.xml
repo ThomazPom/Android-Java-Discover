@@ -138,7 +138,8 @@
                 android:layout_marginTop="77dp"
                 android:layout_below="@+id/textView2"
                 android:layout_centerHorizontal="true"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:onClick="enregistrerOnCick"/>
 
         </LinearLayout>
     </ScrollView>
