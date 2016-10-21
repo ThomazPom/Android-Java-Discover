@@ -68,7 +68,7 @@ public class enregitrerActivity extends AppCompatActivity {
     public void enregistrerOnCick(View view){
         String sexe = "";
 
-        sexe = ((RadioButton) enregitrerActivity.this.findViewById(((RadioGroup) enregitrerActivity.this.findViewById(R.id.radioGroup3)).getCheckedRadioButtonId())).getText().toString();
+        sexe = ((RadioButton) enregitrerActivity.this.findViewById(((RadioGroup) enregitrerActivity.this.findViewById(R.id.radiogroupsexe)).getCheckedRadioButtonId())).getText().toString();
 
 
         Person c1 = new Person(
@@ -163,7 +163,6 @@ public class enregitrerActivity extends AppCompatActivity {
             super.onPreExecute();
             showProgressDialog(true);
             Toast.makeText(enregitrerActivity.this, R.string.inscription_ok, Toast.LENGTH_LONG).show();
-
         }
 
         @Override

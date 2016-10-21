@@ -59,7 +59,8 @@
                     android:layout_weight="1"
                     android:layout_below="@+id/editTextNom"
                     android:layout_centerHorizontal="true"
-                    android:baselineAligned="true">
+                    android:baselineAligned="true"
+                    android:id="@+id/radiogroupsexe">
 
                     <RadioButton
                         android:text="Mascunlin"
