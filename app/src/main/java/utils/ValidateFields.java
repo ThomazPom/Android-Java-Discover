@@ -184,6 +184,7 @@ public class ValidateFields {
                                 editText.setError("Aucun mot de passe n'a été renseigné");
                             } else {
                                 editText.setError(null);
+                                mirrorPw.setError(null);
                                 lockviews(false, editText);
                                 lockviews(false, mirrorPw);
                             }
