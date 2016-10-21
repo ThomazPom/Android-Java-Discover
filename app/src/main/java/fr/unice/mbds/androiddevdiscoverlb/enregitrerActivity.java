@@ -53,13 +53,6 @@ public class enregitrerActivity extends AppCompatActivity {
         validator.verifyOnFocusChangeListener(mdp2);
     }
 
-    public void lost_focus_enregistrer(View v) {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
 
     public void enregistrerOnCick(View view) {
         String sexe = "";
