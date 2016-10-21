@@ -162,6 +162,8 @@ public class enregitrerActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             showProgressDialog(true);
+            Toast.makeText(enregitrerActivity.this, R.string.inscription_ok, Toast.LENGTH_LONG).show();
+
         }
 
         @Override
@@ -175,7 +177,7 @@ public class enregitrerActivity extends AppCompatActivity {
                 startActivity(i);
 
             }else {
-                Toast.makeText(enregitrerActivity.this, R.string.inscription_ok, Toast.LENGTH_LONG).show();
+                Toast.makeText(enregitrerActivity.this, R.string.ErreurRegister, Toast.LENGTH_LONG).show();
             }
         }
      }
