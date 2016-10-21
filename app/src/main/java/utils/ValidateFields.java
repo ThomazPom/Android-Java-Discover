@@ -104,6 +104,8 @@ public class ValidateFields {
         try {
             verifyOnFocusChangeListener((EditText) view);
 
+
+            lockviews(true, view);
         } catch (Exception e) {
             Log.d(this.getClass().getName(), "Type de vue en entrée non supporté");
         }
@@ -178,6 +180,7 @@ public class ValidateFields {
                                 lockviews(true, editText);
                             } else if (editText.getText().toString().isEmpty()) {
                                 lockviews(true, editText);
+                                lockviews(true,mirrorPw);
                                 editText.setError("Aucun mot de passe n'a été renseigné");
                             } else {
                                 editText.setError(null);
