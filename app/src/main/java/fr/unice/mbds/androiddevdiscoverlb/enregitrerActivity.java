@@ -3,12 +3,16 @@ package fr.unice.mbds.androiddevdiscoverlb;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
@@ -62,7 +66,24 @@ public class enregitrerActivity extends AppCompatActivity {
         }
     }
     public void enregistrerOnCick(View view){
+        String sexe = "";
 
+        sexe = ((RadioButton) enregitrerActivity.this.findViewById(((RadioGroup) enregitrerActivity.this.findViewById(R.id.radioGroup3)).getCheckedRadioButtonId())).getText().toString();
+
+
+        Person c1 = new Person(
+                ((EditText) enregitrerActivity.this.findViewById(R.id.editTextEmail)).getText().toString(),
+                ((EditText) enregitrerActivity.this.findViewById(R.id.editTextNom)).getText().toString(),
+                ((EditText) enregitrerActivity.this.findViewById(R.id.editTextPrenom)).getText().toString(),
+                sexe,
+                ((EditText) enregitrerActivity.this.findViewById(R.id.editTextTelephone)).getText().toString(),
+                ((EditText) enregitrerActivity.this.findViewById(R.id.editTextMDP1)).getText().toString()
+                ,null);
+
+        Person[] ctab = new Person[1];
+        ctab[0] = c1;
+
+        new RegisterTask().execute(ctab);
     }
     ProgressDialog progressDialog;
     public void showProgressDialog(boolean isVisible) {
@@ -146,8 +167,16 @@ public class enregitrerActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Person person) {
             super.onPostExecute(person);
+            //enlever le loading
             showProgressDialog(false);
-            Toast.makeText(enregitrerActivity.this,R.string.inscription_ok, Toast.LENGTH_LONG).show();
+            //Enlever la person
+            if(person!= null){
+                Intent i= new Intent(enregitrerActivity.this, connexionActivity.class);
+                startActivity(i);
+
+            }else {
+                Toast.makeText(enregitrerActivity.this, R.string.inscription_ok, Toast.LENGTH_LONG).show();
+            }
         }
      }
 
