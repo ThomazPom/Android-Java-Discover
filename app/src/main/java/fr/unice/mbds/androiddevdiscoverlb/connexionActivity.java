@@ -151,7 +151,7 @@ public class connexionActivity extends AppCompatActivity {
                 startActivity(i);
 
             } else {
-                Toast.makeText(connexionActivity.this, R.string.ErreurRegister, Toast.LENGTH_LONG).show();
+                Toast.makeText(connexionActivity.this, R.string.ErreurConnexion, Toast.LENGTH_SHORT).show();
             }
         }
     }

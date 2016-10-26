@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">TP Android</string>
     <string name="please_wait">Please Wait</string>
-    <string name="inscription_ok">Inscription reussie</string>
-    <string name="ErreurRegister">Erreur enregistrement</string>
-
+    <string name="inscription_ok">Inscription Reussie</string>
+    <string name="ErreurRegister">Erreur Enregistrement</string>
+    <string name="ErreurConnexion">Erreur Connexion</string>
 </resources>
