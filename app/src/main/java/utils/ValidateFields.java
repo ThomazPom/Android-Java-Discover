@@ -254,7 +254,7 @@ public class ValidateFields {
                             lockviews(false, editText);
                         }
 
-                        //Toast.makeText(editText.getContext(), "Il est obligatoire de fournir un email valide", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(editText.getContext(),     "Il est obligatoire de fournir un email valide", Toast.LENGTH_SHORT).show();
 
                         Log.d(this.getClass().getName(), " event :" + InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                     }
