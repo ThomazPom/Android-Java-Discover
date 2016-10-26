@@ -22,6 +22,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import utils.ValidateFields;
 
 public class enregitrerActivity extends AppCompatActivity {
 
