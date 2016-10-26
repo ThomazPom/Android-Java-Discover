@@ -18,6 +18,8 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.StringTokenizer;
+
 import utils.ValidateFields;
 
 public class connexionActivity extends AppCompatActivity {
@@ -77,6 +79,7 @@ public class connexionActivity extends AppCompatActivity {
 
     class RegisterTask extends AsyncTask<Person, Void, Person> {
 
+        private String resultat = "";
         @Override
         protected Person doInBackground(Person... people) {
             String url = "http://95.142.161.35:1337/person/login/";
@@ -110,6 +113,7 @@ public class connexionActivity extends AppCompatActivity {
                     result.append(line);
                 }
 
+                resultat= result.toString();
                 System.out.println(result.toString());
                 return person;
             } catch (Exception e) {
@@ -131,12 +135,23 @@ public class connexionActivity extends AppCompatActivity {
             //enlever le loading
             showProgressDialog(false);
             //Enlever la person
-            if (person != null) {
+
+            System.out.println(person.toString());
+            StringTokenizer token1 = new StringTokenizer(resultat, ",");
+            String save = token1.nextToken();
+
+            StringTokenizer token2 = new StringTokenizer(save, ":");
+            token2.nextToken();
+            String sucess = token2.nextToken();
+
+
+            if (sucess.equals(" true")) {
+
                 Intent i = new Intent(connexionActivity.this, rightAccessActivity.class);
                 startActivity(i);
 
             } else {
-                Toast.makeText(connexionActivity.this, R.string.ErreurRegister, Toast.LENGTH_LONG).show();
+                Toast.makeText(connexionActivity.this, R.string.ErreurConnexion, Toast.LENGTH_SHORT).show();
             }
         }
     }
