@@ -4,4 +4,5 @@
     <string name="inscription_ok">Inscription Reussie</string>
     <string name="ErreurRegister">Erreur Enregistrement</string>
     <string name="ErreurConnexion">Erreur Connexion</string>
+    <string name="internetConnexionError">Pas de connexion internet</string>
 </resources>

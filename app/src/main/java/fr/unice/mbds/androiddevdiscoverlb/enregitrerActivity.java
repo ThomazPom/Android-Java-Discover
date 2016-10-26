@@ -3,6 +3,8 @@ package fr.unice.mbds.androiddevdiscoverlb;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -51,24 +53,33 @@ public class enregitrerActivity extends AppCompatActivity {
 
 
     public void enregistrerOnCick(View view) {
-        String sexe = "";
 
-        sexe = ((RadioButton) enregitrerActivity.this.findViewById(((RadioGroup) enregitrerActivity.this.findViewById(R.id.radiogroupsexe)).getCheckedRadioButtonId())).getText().toString();
+        ConnectivityManager connManager = (ConnectivityManager) getSystemService(enregitrerActivity.CONNECTIVITY_SERVICE);
+        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+        if (mWifi.isConnected()) {
+
+            String sexe = "";
+
+            sexe = ((RadioButton) enregitrerActivity.this.findViewById(((RadioGroup) enregitrerActivity.this.findViewById(R.id.radiogroupsexe)).getCheckedRadioButtonId())).getText().toString();
 
 
-        Person c1 = new Person(
-                ((EditText) enregitrerActivity.this.findViewById(R.id.editTextEmail)).getText().toString(),
-                ((EditText) enregitrerActivity.this.findViewById(R.id.editTextNom)).getText().toString(),
-                ((EditText) enregitrerActivity.this.findViewById(R.id.editTextPrenom)).getText().toString(),
-                sexe,
-                ((EditText) enregitrerActivity.this.findViewById(R.id.editTextTelephone)).getText().toString(),
-                ((EditText) enregitrerActivity.this.findViewById(R.id.editTextMDP1)).getText().toString()
-                , null);
+            Person c1 = new Person(
+                    ((EditText) enregitrerActivity.this.findViewById(R.id.editTextEmail)).getText().toString(),
+                    ((EditText) enregitrerActivity.this.findViewById(R.id.editTextNom)).getText().toString(),
+                    ((EditText) enregitrerActivity.this.findViewById(R.id.editTextPrenom)).getText().toString(),
+                    sexe,
+                    ((EditText) enregitrerActivity.this.findViewById(R.id.editTextTelephone)).getText().toString(),
+                    ((EditText) enregitrerActivity.this.findViewById(R.id.editTextMDP1)).getText().toString()
+                    , null);
 
-        Person[] ctab = new Person[1];
-        ctab[0] = c1;
+            Person[] ctab = new Person[1];
+            ctab[0] = c1;
 
-        new RegisterTask().execute(ctab);
+            new RegisterTask().execute(ctab);
+        } else {
+            Toast.makeText(enregitrerActivity.this, R.string.internetConnexionError, Toast.LENGTH_SHORT).show();
+        }
     }
 
     ProgressDialog progressDialog;
@@ -156,14 +167,20 @@ public class enregitrerActivity extends AppCompatActivity {
             //enlever le loading
             showProgressDialog(false);
             //Enlever la person
-            if (person != null) {
-                Intent i = new Intent(enregitrerActivity.this, connexionActivity.class);
-                startActivity(i);
+            ConnectivityManager connManager = (ConnectivityManager) getSystemService(connexionActivity.CONNECTIVITY_SERVICE);
+            NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
-            } else {
-                Toast.makeText(enregitrerActivity.this, R.string.ErreurRegister, Toast.LENGTH_LONG).show();
+            if (mWifi.isConnected()) {
+                if (person != null) {
+                    Intent i = new Intent(enregitrerActivity.this, connexionActivity.class);
+                    startActivity(i);
+                } else {
+                    Toast.makeText(enregitrerActivity.this, R.string.ErreurRegister, Toast.LENGTH_LONG).show();
+                }
+            }
+            else {
+                Toast.makeText(enregitrerActivity.this, R.string.internetConnexionError, Toast.LENGTH_SHORT).show();
             }
         }
     }
-
 }

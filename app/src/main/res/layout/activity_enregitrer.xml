@@ -75,10 +75,9 @@
 
                     <RadioButton
                         android:text="Feminin"
-                        android:layout_width="wrap_content"
+                        android:layout_width="340dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/radioButtonFeminin"
-                        android:layout_weight="1"
                         android:layout_below="@+id/editTextNom"
                         android:layout_alignRight="@+id/editTextNom"
                         android:layout_alignEnd="@+id/editTextNom"

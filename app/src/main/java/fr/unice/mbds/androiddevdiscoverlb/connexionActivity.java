@@ -3,18 +3,22 @@ package fr.unice.mbds.androiddevdiscoverlb;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
@@ -25,32 +29,40 @@ import utils.ValidateFields;
 public class connexionActivity extends AppCompatActivity {
     EditText mailConnexionTF;
     EditText mdpConnexionTF;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connexion);
 
         mailConnexionTF = (EditText) this.findViewById(R.id.mailConnexionTF);
         mdpConnexionTF = (EditText) this.findViewById(R.id.mdpConnexionTF);
 
-        ValidateFields validate = new ValidateFields(this,Arrays.asList(new View[]{this.findViewById(R.id.SaveLogin)}),true);
+        ValidateFields validate = new ValidateFields(this, Arrays.asList(new View[]{this.findViewById(R.id.SaveLogin)}), true);
 
         validate.verifyOnFocusChangeListener(this.findViewById(R.id.mailConnexionTF));
 
         validate.verifyOnFocusChangeListener(this.findViewById(R.id.mdpConnexionTF));
     }
 
-
     public void onClickConnexionButton(View v) {
+        ConnectivityManager connManager = (ConnectivityManager) getSystemService(connexionActivity.CONNECTIVITY_SERVICE);
+        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
-        Person c1 = new Person(
-                ((EditText) connexionActivity.this.findViewById(R.id.mailConnexionTF)).getText().toString(),
-                ((EditText) connexionActivity.this.findViewById(R.id.mdpConnexionTF)).getText().toString());
+        if (mWifi.isConnected()) {
 
-        Person[] ctab = new Person[1];
-        ctab[0] = c1;
+            Person c1 = new Person(
+                    ((EditText) connexionActivity.this.findViewById(R.id.mailConnexionTF)).getText().toString(),
+                    ((EditText) connexionActivity.this.findViewById(R.id.mdpConnexionTF)).getText().toString());
 
-        new RegisterTask().execute(ctab);
+            Person[] ctab = new Person[1];
+            ctab[0] = c1;
+
+            new RegisterTask().execute(ctab);
+        } else {
+            Toast.makeText(connexionActivity.this, R.string.internetConnexionError, Toast.LENGTH_SHORT).show();
+        }
     }
 
     ProgressDialog progressDialog;
@@ -80,6 +92,7 @@ public class connexionActivity extends AppCompatActivity {
     class RegisterTask extends AsyncTask<Person, Void, Person> {
 
         private String resultat = "";
+
         @Override
         protected Person doInBackground(Person... people) {
             String url = "http://95.142.161.35:1337/person/login/";
@@ -97,7 +110,7 @@ public class connexionActivity extends AppCompatActivity {
                 StringEntity entity = new StringEntity(obj.toString());
 
                 post.setEntity(entity);
-                post.addHeader("content-type","application/json");
+                post.addHeader("content-type", "application/json");
                 HttpResponse response = client.execute(post);
                 System.out.println("\nSending 'POST' request to URL : " + url);
                 System.out.println("Post parameters : " + post.getEntity());
@@ -113,7 +126,7 @@ public class connexionActivity extends AppCompatActivity {
                     result.append(line);
                 }
 
-                resultat= result.toString();
+                resultat = result.toString();
                 System.out.println(result.toString());
                 return person;
             } catch (Exception e) {
@@ -136,7 +149,6 @@ public class connexionActivity extends AppCompatActivity {
             showProgressDialog(false);
             //Enlever la person
 
-            System.out.println(person.toString());
             StringTokenizer token1 = new StringTokenizer(resultat, ",");
             String save = token1.nextToken();
 
