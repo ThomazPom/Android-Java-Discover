@@ -141,6 +141,7 @@ public class connexionActivity extends AppCompatActivity {
             String save = token1.nextToken();
 
             StringTokenizer token2 = new StringTokenizer(save, ":");
+            token2.nextToken();
             String sucess = token2.nextToken();
 
 
