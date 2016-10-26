@@ -148,6 +148,8 @@ public class connexionActivity extends AppCompatActivity {
             if (sucess.equals(" true")) {
 
                 Intent i = new Intent(connexionActivity.this, rightAccessActivity.class);
+                i.putExtra("MAIL_CONEXION", mailConnexionTF.getText().toString());
+                i.putExtra("MDP_CONEXION", mdpConnexionTF.getText().toString());
                 startActivity(i);
 
             } else {
