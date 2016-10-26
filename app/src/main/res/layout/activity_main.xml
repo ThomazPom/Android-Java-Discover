@@ -45,7 +45,7 @@
             android:textStyle="normal|bold"
             android:layout_width="match_parent"
             android:textAlignment="center"
-            android:textColor="@android:color/holo_blue_bright" />
+            android:textColor="@android:color/holo_blue_dark" />
 
         <TextView
             android:text="Veulliez sélectionner &quot;s'enregister&quot; pour créer un compte ou &quot;se connecter&quot; si vous en avez déjà un."
@@ -55,7 +55,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="26dp"
             android:id="@+id/textView2"
-            android:textColor="@android:color/holo_blue_bright"
+            android:textColor="@android:color/holo_blue_dark"
             android:textAlignment="center" />
 
         <Button
@@ -63,7 +63,7 @@
             android:id="@+id/buttonSenregister"
             android:layout_width="match_parent"
             style="@style/Widget.AppCompat.Button.Colored"
-            android:background="@android:color/holo_blue_bright"
+            android:background="@drawable/mybutton"
             android:textAllCaps="false"
             android:fontFamily="sans-serif-medium"
             android:layout_height="40dp"
@@ -77,7 +77,7 @@
             android:id="@+id/buttonSeconecter"
             android:layout_width="match_parent"
             style="@style/Widget.AppCompat.Button.Colored"
-            android:background="@android:color/holo_blue_bright"
+            android:background="@drawable/mybutton"
             android:textAllCaps="false"
             android:fontFamily="sans-serif-medium"
             android:layout_height="40dp"
