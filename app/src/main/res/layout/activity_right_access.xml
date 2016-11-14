@@ -5,8 +5,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:onClick="lost_focus_right_access">
+        android:layout_height="match_parent">
 
         <TextView
             android:text="mon Login"

@@ -7,6 +7,10 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
+import java.util.Arrays;
+
+import utils.ValidateFields;
+
 public class rightAccessActivity extends AppCompatActivity {
     TextView loginTV;
     TextView mdpTV;
@@ -16,6 +20,8 @@ public class rightAccessActivity extends AppCompatActivity {
         setContentView(R.layout.activity_right_access);
         loginTV = (TextView) this.findViewById(R.id.loginTV);
         mdpTV = (TextView) this.findViewById(R.id.mdpTV);
+
+        ValidateFields validate = new ValidateFields(this, Arrays.asList(new View[]{}), true);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -28,12 +34,4 @@ public class rightAccessActivity extends AppCompatActivity {
         }
     }
 
-    public void lost_focus_right_access(View v)
-    {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
 }

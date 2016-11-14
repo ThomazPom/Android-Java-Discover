@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -18,10 +19,14 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import utils.CallAPI;
 import utils.ValidateFields;
 
 public class enregitrerActivity extends AppCompatActivity {
@@ -73,10 +78,7 @@ public class enregitrerActivity extends AppCompatActivity {
                     ((EditText) enregitrerActivity.this.findViewById(R.id.editTextMDP1)).getText().toString()
                     , null);
 
-            Person[] ctab = new Person[1];
-            ctab[0] = c1;
-
-            new RegisterTask().execute(ctab);
+            registerPerson(c1);
         } else {
             Toast.makeText(enregitrerActivity.this, R.string.internetConnexionError, Toast.LENGTH_SHORT).show();
         }
@@ -106,81 +108,46 @@ public class enregitrerActivity extends AppCompatActivity {
         }
     }
 
-    class RegisterTask extends AsyncTask<Person, Void, Person> {
 
-        @Override
-        protected Person doInBackground(Person... people) {
-            String url = "http://95.142.161.35:1337/person/";
-                Person person = people[0];
-                try {
-                    HttpClient client = new DefaultHttpClient();
-                    HttpPost post = new HttpPost(url);
 
-                    // add header
+    private void registerPerson(Person person) {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("nom", person.getNom());
+        params.put("prenom", person.getPrenom());
+        params.put("sexe", person.getSexe());
+        params.put("telephone", person.getTelephone());
+        params.put("email", person.getEmail());
+        params.put("createdby", person.getCreatedBy());
+        params.put("password", person.getPassword());
+        final int d = Log.d("loginPerson", "loginPerson");
+        new CallAPI("http://95.142.161.35:1337/person/", new CallAPI.CallbackClass() {
+            @Override
+            public void postCall(JSONObject result) {
 
-                    post.setHeader("Content-Type", "application/json");
-                    JSONObject obj = new JSONObject();
-                    obj.put("nom", person.getNom());
-                    obj.put("prenom", person.getPrenom());
-                    obj.put("sexe", person.getSexe());
-                    obj.put("telephone", person.getTelephone());
-                    obj.put("email", person.getEmail());
-                    obj.put("createdby", person.getCreatedBy());
-                    obj.put("password", person.getPassword());
-                    StringEntity entity = new StringEntity(obj.toString());
+                Log.d("postCall", String.valueOf(result));
 
-                    post.setEntity(entity);
-                    post.addHeader("content-type","application/json");
-                    HttpResponse response = client.execute(post);
-                    System.out.println("\nSending 'POST' request to URL : " + url);
-                    System.out.println("Post parameters : " + post.getEntity());
-                    System.out.println("Response Code : " +
-                            response.getStatusLine().getStatusCode());
+                if (result != null) {
+                    try {
+                        if ((Boolean) result.get("success")) {
 
-                    BufferedReader rd = new BufferedReader(
-                            new InputStreamReader(response.getEntity().getContent()));
+                            Intent i = new Intent(enregitrerActivity.this, connexionActivity.class);
+                            startActivity(i);
+                            Toast.makeText(enregitrerActivity.this, R.string.inscription_ok, Toast.LENGTH_LONG).show();
+                            final int d = Log.d("postCall(String result)", result.toString());
+                            return;
 
-                    StringBuffer result = new StringBuffer();
-                    String line = "";
-                    while ((line = rd.readLine()) != null) {
-                        result.append(line);
+                        } else {
+
+                        }
+                    } catch (JSONException e) {
+
+                        e.printStackTrace();
                     }
-
-                    System.out.println(result.toString());
-                    return person;
-                } catch (Exception e) {
-                    System.err.println(e.getMessage());
                 }
-            return null;
-        }
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            showProgressDialog(true);
-            Toast.makeText(enregitrerActivity.this, R.string.please_wait, Toast.LENGTH_LONG).show();
-        }
-
-        @Override
-        protected void onPostExecute(Person person) {
-            super.onPostExecute(person);
-            //enlever le loading
-            showProgressDialog(false);
-            //Enlever la person
-            ConnectivityManager connManager = (ConnectivityManager) getSystemService(connexionActivity.CONNECTIVITY_SERVICE);
-            NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
-            if (mWifi.isConnected()) {
-                if (person != null) {
-                    Intent i = new Intent(enregitrerActivity.this, connexionActivity.class);
-                    startActivity(i);
-                } else {
-                    Toast.makeText(enregitrerActivity.this, R.string.ErreurRegister, Toast.LENGTH_LONG).show();
-                }
+                Toast.makeText(enregitrerActivity.this, R.string.ErreurRegister, Toast.LENGTH_LONG).show();
             }
-            else {
-                Toast.makeText(enregitrerActivity.this, R.string.internetConnexionError, Toast.LENGTH_SHORT).show();
-            }
-        }
+        }, params, getApplicationContext()).execute();
+
     }
 }
