@@ -93,6 +93,8 @@ public class CallAPI extends AsyncTask<String, String, String> {
     public String sendHTTPData(String urlpath, JSONObject json) {
         HttpURLConnection connection = null;
         try {
+
+            Log.d("sendHTTPData",urlpath);
             URL url=new URL(urlpath);
             connection = (HttpURLConnection) url.openConnection();
             connection.setDoOutput(true);
@@ -104,7 +106,7 @@ public class CallAPI extends AsyncTask<String, String, String> {
             streamWriter.write(json.toString());
             streamWriter.flush();
             StringBuilder stringBuilder = new StringBuilder();
-            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK){
+            if ( connection.getResponseCode()>=200 && connection.getResponseCode()<300 ){
                 InputStreamReader streamReader = new InputStreamReader(connection.getInputStream());
                 BufferedReader bufferedReader = new BufferedReader(streamReader);
                 String response = null;
@@ -114,6 +116,8 @@ public class CallAPI extends AsyncTask<String, String, String> {
                 bufferedReader.close();
 
                 Log.d("test", stringBuilder.toString());
+
+                Log.d("sendHTTPData", stringBuilder.toString());
                 return stringBuilder.toString();
             } else {
                 Log.e("test", connection.getResponseMessage());
@@ -133,10 +137,9 @@ public class CallAPI extends AsyncTask<String, String, String> {
     protected void onPostExecute(String result) {
 
         try {
-
-            Log.d("onPostExecute", String.valueOf(new JSONObject(result)));
-            callback.postCall(new JSONObject(result));
-        } catch (JSONException e) {
+            Log.d("onPostExecute"," "+result);
+           callback.postCall(new JSONObject(result));
+        } catch (Exception e) {
 
             callback.postCall(null);
             e.printStackTrace();

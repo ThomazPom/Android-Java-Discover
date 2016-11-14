@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -21,6 +22,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -109,7 +111,6 @@ public class enregitrerActivity extends AppCompatActivity {
     }
 
 
-
     private void registerPerson(Person person) {
         HashMap<String, Object> params = new HashMap<>();
         params.put("nom", person.getNom());
@@ -123,29 +124,13 @@ public class enregitrerActivity extends AppCompatActivity {
         new CallAPI("http://95.142.161.35:1337/person/", new CallAPI.CallbackClass() {
             @Override
             public void postCall(JSONObject result) {
-
-                Log.d("postCall", String.valueOf(result));
-
                 if (result != null) {
-                    try {
-                        if ((Boolean) result.get("success")) {
-
-                            Intent i = new Intent(enregitrerActivity.this, connexionActivity.class);
-                            startActivity(i);
-                            Toast.makeText(enregitrerActivity.this, R.string.inscription_ok, Toast.LENGTH_LONG).show();
-                            final int d = Log.d("postCall(String result)", result.toString());
-                            return;
-
-                        } else {
-
-                        }
-                    } catch (JSONException e) {
-
-                        e.printStackTrace();
-                    }
+                    Intent i = new Intent(enregitrerActivity.this, connexionActivity.class);
+                    startActivity(i);
+                    Toast.makeText(enregitrerActivity.this, R.string.inscription_ok, Toast.LENGTH_LONG).show();
                 }
-
                 Toast.makeText(enregitrerActivity.this, R.string.ErreurRegister, Toast.LENGTH_LONG).show();
+
             }
         }, params, getApplicationContext()).execute();
 

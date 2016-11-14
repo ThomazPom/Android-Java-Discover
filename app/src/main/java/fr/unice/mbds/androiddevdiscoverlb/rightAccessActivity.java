@@ -12,25 +12,34 @@ import java.util.Arrays;
 import utils.ValidateFields;
 
 public class rightAccessActivity extends AppCompatActivity {
-    TextView loginTV;
-    TextView mdpTV;
+    TextView nomTV;
+    TextView emailTV;
+    TextView numTelTv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_right_access);
-        loginTV = (TextView) this.findViewById(R.id.loginTV);
-        mdpTV = (TextView) this.findViewById(R.id.mdpTV);
+
+        emailTV = (TextView) this.findViewById(R.id.emailTV);
+
+        nomTV = (TextView) this.findViewById(R.id.nomTV);
+
+        numTelTv = (TextView) this.findViewById(R.id.numTelTV);
 
         ValidateFields validate = new ValidateFields(this, Arrays.asList(new View[]{}), true);
 
+/*
+*                             i.putExtra("MAIL_CONNEXION", result.getJSONObject("user").getString("email"));
+                            i.putExtra("NOM_CONNEXION", result.getJSONObject("user").getString("nom"));
+                            i.putExtra("PRENOM_CONNEXION", result.getJSONObject("user").getString("prenom"));
+                            i.putExtra("NUMTEL_CONNEXION",  result.getJSONObject("user").getString("telephone"));
+
+* */
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String  mailConnexionFromParent = extras.getString("MAIL_CONEXION");
-            String  mdpConnexionFromParent = extras.getString("MDP_CONEXION");
-
-            loginTV.setText(mailConnexionFromParent);
-            mdpTV.setText(mdpConnexionFromParent);
-
+            emailTV.setText(extras.getString("MAIL_CONNEXION"));
+            nomTV.setText(extras.getString("NOM_CONNEXION")+" "+extras.getString("PRENOM_CONNEXION"));
+            numTelTv.setText(extras.getString("NUMTEL_CONNEXION"));
         }
     }
 

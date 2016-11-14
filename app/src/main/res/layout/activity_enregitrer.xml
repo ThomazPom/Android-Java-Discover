@@ -63,7 +63,7 @@
                     android:id="@+id/radiogroupsexe">
 
                     <RadioButton
-                        android:text="Mascunlin"
+                        android:text="Masculin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/radioButtonMasculin"

@@ -103,20 +103,27 @@ public class connexionActivity extends AppCompatActivity {
             @Override
             public void postCall(JSONObject result) {
 
-                Log.d("postCall", String.valueOf(result));
 
                 if(result!=null)
                 {
+
+                    Log.d("postCall", String.valueOf(result));
                     try {
-                        if((Boolean) result.get("success"))
+                        if( result.getBoolean("success"))
                         {
 
                             Toast.makeText(connexionActivity.this, R.string.connexion_ok, Toast.LENGTH_LONG).show();
                             final int d = Log.d("postCall(String result)",result.toString());
                             Intent i = new Intent(connexionActivity.this, rightAccessActivity.class);
+
+                            i.putExtra("MAIL_CONNEXION", result.getJSONObject("user").getString("email"));
+                            i.putExtra("NOM_CONNEXION", result.getJSONObject("user").getString("nom"));
+                            i.putExtra("PRENOM_CONNEXION", result.getJSONObject("user").getString("prenom"));
+                            i.putExtra("NUMTEL_CONNEXION",  result.getJSONObject("user").getString("telephone"));
+                            Log.d("postCall",result.getJSONObject("user").getString("email"));
                             startActivity(i);
-                            i.putExtra("MAIL_CONEXION", mailConnexionTF.getText().toString());
-                            i.putExtra("MDP_CONEXION", mdpConnexionTF.getText().toString());
+
+
                             return;
 
                          }
