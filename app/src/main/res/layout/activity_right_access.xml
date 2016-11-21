@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -18,35 +19,56 @@
             android:paddingLeft="60dp"
             android:paddingRight="60dp">
 
-            <TextView
-                android:text="BIenvenue "
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/nomTV"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:textSize="24sp" />
+                android:layout_marginTop="30dp">
 
-            <TextView
-                android:text="BIenvenue "
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/emailTV"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:textSize="24sp" />
+                <ImageView
+                    android:layout_width="97dp"
+                    android:layout_height="103dp"
+                    app:srcCompat="@mipmap/green_ball"
+                    android:id="@+id/imageView2" />
 
-            <TextView
-                android:text="BIenvenue "
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/numTelTV"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:textSize="24sp" />
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:text="BIenvenue "
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/emailTV"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:text="BIenvenue "
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/nomTV"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:text="BIenvenue "
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/numTelTV"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:textSize="24sp" />
+                </LinearLayout>
+
+            </LinearLayout>
 
             <Button
                 android:text="Voir les serveurs"
@@ -56,10 +78,12 @@
                 android:textAllCaps="false"
                 android:fontFamily="sans-serif-medium"
                 android:id="@+id/buttonviewserv"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:onClick="onClickServerButton"
+                android:layout_marginTop="30dp" />
 
             <Button
-                android:text="Voir les restaurants"
+                android:text="Creer une commande"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/Widget.AppCompat.Button.Colored"
@@ -68,8 +92,10 @@
                 android:fontFamily="sans-serif-medium"
                 android:id="@+id/buttonviewrstos"
                 android:layout_marginTop="10dp"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:onClick="onClickCommandButton" />
 
         </LinearLayout>
+
     </RelativeLayout>
 </LinearLayout>

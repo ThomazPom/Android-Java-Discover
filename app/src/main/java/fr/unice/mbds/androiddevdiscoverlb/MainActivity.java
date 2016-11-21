@@ -24,12 +24,4 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, connexionActivity.class);
         startActivity(intent);
     }
-    public void lost_focus_main(View v)
-    {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
 }

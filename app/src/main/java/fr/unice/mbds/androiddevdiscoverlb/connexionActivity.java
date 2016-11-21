@@ -18,6 +18,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,20 +53,12 @@ public class connexionActivity extends AppCompatActivity {
 
     public void onClickConnexionButton(View v) {
         ConnectivityManager connManager = (ConnectivityManager) getSystemService(connexionActivity.CONNECTIVITY_SERVICE);
-        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        Person c1 = new Person(
+                ((EditText) connexionActivity.this.findViewById(R.id.mailConnexionTF)).getText().toString(),
+                ((EditText) connexionActivity.this.findViewById(R.id.mdpConnexionTF)).getText().toString());
 
-        if (mWifi.isConnected()) {
-
-            Person c1 = new Person(
-                    ((EditText) connexionActivity.this.findViewById(R.id.mailConnexionTF)).getText().toString(),
-                    ((EditText) connexionActivity.this.findViewById(R.id.mdpConnexionTF)).getText().toString());
-
-            Log.d("onClickConnexionButton","onClickConnexionButton");
-            loginPerson(c1);
-            //new RegisterTask().execute(ctab);
-        } else {
-            Toast.makeText(connexionActivity.this, R.string.internetConnexionError, Toast.LENGTH_SHORT).show();
-        }
+        Log.d("onClickConnexionButton", "onClickConnexionButton");
+        loginPerson(c1);
     }
 
     ProgressDialog progressDialog;
@@ -93,53 +86,60 @@ public class connexionActivity extends AppCompatActivity {
     }
 
 
-    private void loginPerson(Person person)
-    {
-        HashMap<String,Object> params = new HashMap<>();
+    private void loginPerson(Person person) {
+/*
+        Intent i = new Intent(connexionActivity.this, rightAccessActivity.class);
+        startActivity(i);
+*/
+        HashMap<String, Object> params = new HashMap<>();
         params.put("email", person.getEmail());
         params.put("password", person.getPassword());
-        final int d = Log.d("loginPerson","loginPerson");
-        new CallAPI("http://95.142.161.35:1337/person/login/", new CallAPI.CallbackClass(){
+        final int d = Log.d("loginPerson", "loginPerson");
+        new CallAPI("http://95.142.161.35:1337/person/login/", new CallAPI.CallbackClass() {
             @Override
-            public void postCall(JSONObject result) {
+            public void postCall(JSONArray arrayresult) {
 
 
-                if(result!=null)
-                {
+                if (arrayresult != null) {
+                    JSONObject result = null;
+                    try {
+                        result = arrayresult.getJSONObject(0);
+                    } catch (JSONException e) {
+
+                        e.printStackTrace();
+                        return;
+                    }
 
                     Log.d("postCall", String.valueOf(result));
                     try {
-                        if( result.getBoolean("success"))
-                        {
+                        if (result.getBoolean("success")) {
 
                             Toast.makeText(connexionActivity.this, R.string.connexion_ok, Toast.LENGTH_LONG).show();
-                            final int d = Log.d("postCall(String result)",result.toString());
+                            final int d = Log.d("postCall(String result)", result.toString());
                             Intent i = new Intent(connexionActivity.this, rightAccessActivity.class);
 
                             i.putExtra("MAIL_CONNEXION", result.getJSONObject("user").getString("email"));
                             i.putExtra("NOM_CONNEXION", result.getJSONObject("user").getString("nom"));
                             i.putExtra("PRENOM_CONNEXION", result.getJSONObject("user").getString("prenom"));
-                            i.putExtra("NUMTEL_CONNEXION",  result.getJSONObject("user").getString("telephone"));
-                            Log.d("postCall",result.getJSONObject("user").getString("email"));
+                            i.putExtra("NUMTEL_CONNEXION", result.getJSONObject("user").getString("telephone"));
+                            Log.d("postCall", result.getJSONObject("user").getString("email"));
                             startActivity(i);
 
 
                             return;
 
-                         }
-                        else
-                        {
-
+                        } else {
                         }
                     } catch (JSONException e) {
 
                         e.printStackTrace();
                     }
+
                 }
 
                 Toast.makeText(connexionActivity.this, R.string.ErreurConnexion, Toast.LENGTH_LONG).show();
             }
-        },params, getApplicationContext()).execute();
+        }, params, getApplicationContext()).execute("POST");
 
     }
 }

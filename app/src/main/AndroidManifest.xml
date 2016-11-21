@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fr.unice.mbds.androiddevdiscoverlb">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
@@ -20,16 +20,20 @@
         </activity>
         <activity
             android:name=".enregitrerActivity"
-            android:parentActivityName="fr.unice.mbds.androiddevdiscoverlb.MainActivity">
-        </activity>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".connexionActivity"
-            android:parentActivityName="fr.unice.mbds.androiddevdiscoverlb.MainActivity">
-        </activity>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".rightAccessActivity"
-            android:parentActivityName="fr.unice.mbds.androiddevdiscoverlb.connexionActivity">
-        </activity>
+            android:parentActivityName=".connexionActivity" />
+        <activity
+            android:name=".ServeursActivity"
+            android:parentActivityName=".rightAccessActivity" />
+        <activity
+            android:name=".ActivityCommande"
+            android:label="@string/title_activity_commande"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

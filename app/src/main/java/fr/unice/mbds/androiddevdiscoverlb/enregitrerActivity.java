@@ -20,6 +20,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -123,16 +124,27 @@ public class enregitrerActivity extends AppCompatActivity {
         final int d = Log.d("loginPerson", "loginPerson");
         new CallAPI("http://95.142.161.35:1337/person/", new CallAPI.CallbackClass() {
             @Override
-            public void postCall(JSONObject result) {
-                if (result != null) {
+            public void postCall(JSONArray resultarray) {
+                if (resultarray != null) {
+                    try {
+                        JSONObject result = resultarray.getJSONObject(0);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } finally {
+
+
+                    }
+
                     Intent i = new Intent(enregitrerActivity.this, connexionActivity.class);
                     startActivity(i);
                     Toast.makeText(enregitrerActivity.this, R.string.inscription_ok, Toast.LENGTH_LONG).show();
+                    return;
+
                 }
                 Toast.makeText(enregitrerActivity.this, R.string.ErreurRegister, Toast.LENGTH_LONG).show();
 
             }
-        }, params, getApplicationContext()).execute();
+        }, params, getApplicationContext()).execute("POST");
 
     }
 }

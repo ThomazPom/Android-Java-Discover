@@ -4,98 +4,114 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.util.JsonReader;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
+import com.google.common.base.Joiner;
 
 import org.apache.commons.io.IOUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 import fr.unice.mbds.androiddevdiscoverlb.R;
-import fr.unice.mbds.androiddevdiscoverlb.connexionActivity;
 
 /**
  * Created by Thoma on 14/11/2016.
  */
 
-public class CallAPI extends AsyncTask<String, String, String> {
+public class CallAPI extends AsyncTask<String, String, JSONArray> {
 
     public static abstract class CallbackClass {
-        public abstract void postCall(JSONObject result);
+        public abstract void postCall(JSONArray result);
     }
 
+
     public CallAPI(String urlString, CallbackClass callback
-                , HashMap<String, Object> postDataParam, Context context) {
+            , HashMap<String, Object> postDataParam, Context context) {
 
         this.callback = callback;
         this.postDataParam = postDataParam;
         this.urlString = urlString;
-        this.context=context;
+        this.context = context;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        if (!isConnected) {
+
+            Toast.makeText(context, R.string.internetConnexionError, Toast.LENGTH_LONG).show();
+            Log.d("doInBackground", "Aucune connexion internet");
+
+        }
+
+
     }
 
 
     private Context context;
-    private  CallbackClass callback;
-    private HashMap<String, Object> postDataParam ;
+    private CallbackClass callback;
+    private HashMap<String, Object> postDataParam;
 
     private String urlString = ""; // URL to call
 
     @Override
-    protected String doInBackground(String... params) {
+    protected JSONArray doInBackground(String... params) {
 
-        final int d = Log.d("CallAPI","doInBackground");
-        ConnectivityManager cm =
-                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        final int d = Log.d("CallAPI", "doInBackground");
 
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
-        if (!isConnected)
-        {
-
-            Toast.makeText(context, R.string.ErreurConnexion, Toast.LENGTH_LONG).show();
-            Log.d("doInBackground","Aucune connexion internet");
-            return null;
-        }
 
         JSONObject json = new JSONObject();
-        for (Map.Entry<String, Object> entry : postDataParam.entrySet())
-        {
+        for (Map.Entry<String, Object> entry : postDataParam.entrySet()) {
             try {
-                json.put(entry.getKey(),entry.getValue());
+                json.put(entry.getKey(), entry.getValue());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        };
-        return sendHTTPData(urlString,json);
+        }
+        ;
+
+
+        if (params.length > 0) {
+            switch (params[0]) {
+                case "POST":
+                    JSONArray jarr = new JSONArray();
+                    jarr.put(sendHTTPData(urlString, json));
+                    return jarr;
+                case "DELETE":
+                    return deleteFromURL(urlString);
+            }
+        }
+        return getDataFromURL(urlString);
     }
 
-    public String sendHTTPData(String urlpath, JSONObject json) {
+    public JSONObject sendHTTPData(String urlpath, JSONObject json) {
         HttpURLConnection connection = null;
         try {
 
-            Log.d("sendHTTPData",urlpath);
-            URL url=new URL(urlpath);
+            Log.d("sendHTTPData", urlpath);
+            URL url = new URL(urlpath);
             connection = (HttpURLConnection) url.openConnection();
             connection.setDoOutput(true);
             connection.setDoInput(true);
@@ -106,7 +122,7 @@ public class CallAPI extends AsyncTask<String, String, String> {
             streamWriter.write(json.toString());
             streamWriter.flush();
             StringBuilder stringBuilder = new StringBuilder();
-            if ( connection.getResponseCode()>=200 && connection.getResponseCode()<300 ){
+            if (connection.getResponseCode() >= 200 && connection.getResponseCode() < 300) {
                 InputStreamReader streamReader = new InputStreamReader(connection.getInputStream());
                 BufferedReader bufferedReader = new BufferedReader(streamReader);
                 String response = null;
@@ -118,31 +134,134 @@ public class CallAPI extends AsyncTask<String, String, String> {
                 Log.d("test", stringBuilder.toString());
 
                 Log.d("sendHTTPData", stringBuilder.toString());
-                return stringBuilder.toString();
+                return new JSONObject( stringBuilder.toString());
             } else {
                 Log.e("test", connection.getResponseMessage());
                 return null;
             }
-        } catch (Exception exception){
+        } catch (Exception exception) {
             Log.e("test", exception.toString());
             return null;
         } finally {
-            if (connection != null){
+            if (connection != null) {
                 connection.disconnect();
             }
         }
     }
 
     @Override
-    protected void onPostExecute(String result) {
+    protected void onPostExecute(JSONArray result) {
 
         try {
-            Log.d("onPostExecute"," "+result);
-           callback.postCall(new JSONObject(result));
+            callback.postCall(result);
+            Log.d("onPostExecute", " " + result);
+
         } catch (Exception e) {
 
-            callback.postCall(null);
             e.printStackTrace();
         }
     }
+
+
+    public static JSONArray deleteFromURL(String urlString) {
+
+        HttpURLConnection con = null;
+        try {
+            URL obj = new URL(urlString);
+            con = (HttpURLConnection) obj.openConnection();
+            // optional default is GET
+            con.setRequestMethod("DELETE");
+            InputStreamReader inputStream = new InputStreamReader(con.getInputStream());
+            BufferedReader bf = new BufferedReader(inputStream);
+            String line;
+            StringBuilder sb = new StringBuilder();
+            JSONArray array = new JSONArray();
+            String toParse = "";
+            int i =0;
+            while ((line = bf.readLine()) != null) {
+                i++;
+                String trim = line.trim();
+                if (!trim.equals("[") && !trim.equals("]")) {
+
+                    //  Log.d("line", line);
+                    if (trim.equals("}") || trim.equals("},")) {
+                        toParse+="}";
+                        // Log.d("toparse"+i, toParse);
+                        array.put(new JSONObject(toParse));
+                        toParse = "";
+                    }
+                    else
+                    {
+                        toParse += line;
+                    }
+                }
+            }
+            return array;
+
+            // return  IOUtils.toString(con.getInputStream(), "UTF8");
+        } catch (Exception exception) {
+            Log.e("DELETE FROM URL", exception.toString());
+
+        } finally {
+            if (con != null) {
+                con.disconnect();
+            }
+        }
+        return null;
+    }
+    public static JSONArray getDataFromURL(String urlString) {
+
+        HttpURLConnection con = null;
+        try {
+
+            URL obj = new URL(urlString);
+            con = (HttpURLConnection) obj.openConnection();
+
+            // optional default is GET
+            con.setRequestMethod("GET");
+
+
+            InputStreamReader inputStream = new InputStreamReader(con.getInputStream());
+
+            BufferedReader bf = new BufferedReader(inputStream);
+            String line;
+            StringBuilder sb = new StringBuilder();
+            JSONArray array = new JSONArray();
+            String toParse = "";
+            int i =0;
+            while ((line = bf.readLine()) != null) {
+                i++;
+                String trim = line.trim();
+                if (!trim.equals("[") && !trim.equals("]")) {
+
+                  //  Log.d("line", line);
+                    if (trim.equals("}") || trim.equals("},")) {
+                        toParse+="}";
+                       // Log.d("toparse"+i, toParse);
+                        array.put(new JSONObject(toParse));
+                        toParse = "";
+
+                    }
+                    else
+                    {
+                        toParse += line;
+                    }
+
+                }
+            }
+            return array;
+
+            // return  IOUtils.toString(con.getInputStream(), "UTF8");
+        } catch (Exception exception) {
+            Log.e("getDataFromURL", exception.toString());
+
+        } finally {
+            if (con != null) {
+                con.disconnect();
+            }
+        }
+        return null;
+    }
+
+
 }
