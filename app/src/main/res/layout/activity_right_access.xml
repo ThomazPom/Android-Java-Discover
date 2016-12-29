@@ -95,6 +95,19 @@
                 android:textSize="18sp"
                 android:onClick="onClickCommandButton" />
 
+            <Button
+                android:text="Voir les commandes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:background="@drawable/mybutton"
+                android:textAllCaps="false"
+                android:fontFamily="sans-serif-medium"
+                android:id="@+id/button_list_commands"
+                android:layout_marginTop="10dp"
+                android:textSize="18sp"
+                android:onClick="onClickViewCommandButton" />
+
         </LinearLayout>
 
     </RelativeLayout>

@@ -1,15 +1,23 @@
 package fr.unice.mbds.androiddevdiscoverlb;
 
+import android.graphics.Bitmap;
 import android.util.Log;
+import android.util.LruCache;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.Serializable;
+import java.util.HashMap;
+
+import utils.CallAPI;
 
 /**
  * Created by Thoma on 21/11/2016.
  */
 
-public class Plats {
+public class Plats implements Serializable{
     /*
     "name": "12-volt Lith-ion Drill W/ Bonus Case & 150-piece Socket Set",
             "description": "Lorem ipsum"
@@ -32,6 +40,7 @@ public class Plats {
     private String picture ="NO PIC";
     private int discount =0;
     private String id ="NO ID";
+    private transient JSONObject jsonOfPlat;
 
     public Plats(String name, String description, int price, int calories, String type, String picture, int discount) {
         this.name = name;
@@ -41,13 +50,70 @@ public class Plats {
         this.type = type;
         this.picture = picture;
         this.discount = discount;
+
     }
 
-    public Plats(JSONObject jsonObject) {
+    public JSONObject reConstructJson() {
+        jsonOfPlat = new JSONObject();
         try {
-            this.name=jsonObject.getString("name");
+            jsonOfPlat.put("name",name);
+            jsonOfPlat.put("price",price);
+            jsonOfPlat.put("description",description);
+            jsonOfPlat.put("calories",calories);
+            jsonOfPlat.put("type",type);
+            jsonOfPlat.put("picture",picture);
+            jsonOfPlat.put("discount",discount);
+            jsonOfPlat.put("id",id);
+
         } catch (JSONException e) {
-            Log.d("Plats","no name");
+            e.printStackTrace();
+        }
+        return jsonOfPlat;
+    }
+
+    final static int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+  private  static   LruCache<String, Bitmap> bitmapLruCache = new LruCache<>(maxMemory);
+
+    public Plats(JSONObject jsonObject) {
+        setJsonOfPlat(jsonObject);
+        try {
+            this.name = jsonObject.getString("name");
+        } catch (JSONException e) {
+            Log.d("Plats", "no name");
+            //e.printStackTrace();
+        }
+
+        try {
+            this.id=jsonObject.getString("id");
+        } catch (JSONException e) {
+            Log.d("Plats","no id");
+            //e.printStackTrace();
+        }
+
+        final String pid = this.id;
+        try {
+            final String pict = this.picture = jsonObject.getString("picture");
+
+            if( getBitmap()==null) {
+
+                setBitmap(Bitmap.createBitmap(1,1, Bitmap.Config.ARGB_8888));
+                new CallAPI(getPicture(), new CallAPI.CallbackClass() {
+
+                    @Override
+                    public void postCall(JSONArray arrayresult) {
+
+                        try {
+                            setBitmap((Bitmap) arrayresult.get(0));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            return;
+                        }
+                    }
+                }, new HashMap<String, Object>(), null).execute("GETIMAGE");
+
+            }
+        } catch (JSONException e) {
+            Log.d("Plats","no picture");
             //e.printStackTrace();
         }
         try {
@@ -150,5 +216,21 @@ public class Plats {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmapLruCache.get(getPicture());
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        bitmapLruCache.put(getPicture(),bitmap);
+    }
+
+    public JSONObject getJsonOfPlat() {
+        return jsonOfPlat;
+    }
+
+    public void setJsonOfPlat(JSONObject jsonOfPlat) {
+        this.jsonOfPlat = jsonOfPlat;
     }
 }

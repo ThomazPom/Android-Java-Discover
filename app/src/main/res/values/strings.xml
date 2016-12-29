@@ -9,4 +9,6 @@
     <string name="userdeleted">L\'utilisateur a été supprimé</string>
     <string name="alluserdeleted">Tout les utilisateurs ont été supprimés</string>
     <string name="title_activity_commande">ActivityCommande</string>
+    <string name="title_commande_list">Commandes</string>
+    <string name="title_commande_detail">Commande Detail</string>
 </resources>

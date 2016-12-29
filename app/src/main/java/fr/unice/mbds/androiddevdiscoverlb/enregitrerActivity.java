@@ -122,7 +122,7 @@ public class enregitrerActivity extends AppCompatActivity {
         params.put("createdby", person.getCreatedBy());
         params.put("password", person.getPassword());
         final int d = Log.d("loginPerson", "loginPerson");
-        new CallAPI("http://95.142.161.35:1337/person/", new CallAPI.CallbackClass() {
+        new CallAPI("http://95.142.161.35:8080/person/", new CallAPI.CallbackClass() {
             @Override
             public void postCall(JSONArray resultarray) {
                 if (resultarray != null) {

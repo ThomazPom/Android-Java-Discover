@@ -152,7 +152,7 @@ public class ServeursActivity extends AppCompatActivity {
 
     public void fillList() {
         HashMap<String, Object> params = new HashMap<String, Object>();
-        new CallAPI("http://95.142.161.35:1337/person/", new CallAPI.CallbackClass() {
+        new CallAPI("http://95.142.161.35:8080/person/", new CallAPI.CallbackClass() {
 
             @Override
             public void postCall(JSONArray result) {

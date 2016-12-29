@@ -19,6 +19,7 @@ public class rightAccessActivity extends AppCompatActivity {
     TextView numTelTv;
     Button buttonServeurs;
     Button buttonCommandes;
+    Button buttonViewCommandes;
     static String nomConnecte;
     static String preConnecte;
     static String numTelConnecte;
@@ -35,6 +36,8 @@ public class rightAccessActivity extends AppCompatActivity {
         numTelTv = (TextView) this.findViewById(R.id.numTelTV);
         buttonCommandes = (Button) this.findViewById(R.id.buttonviewrstos);
         buttonServeurs = (Button) this.findViewById(R.id.buttonviewserv);
+        buttonViewCommandes = (Button) this.findViewById(R.id.button_list_commands);
+
 
 
         ValidateFields validate = new ValidateFields(this, Arrays.asList(new View[]{}), true);
@@ -61,6 +64,11 @@ public class rightAccessActivity extends AppCompatActivity {
             numTelTv.setText(numTelConnecte);
 
         }
+    }
+    public void onClickViewCommandButton(View v) {
+
+        Intent i = new Intent(rightAccessActivity.this, CommandeListActivity.class);
+        startActivity(i);
     }
     public void onClickCommandButton(View v) {
 

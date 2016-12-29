@@ -110,19 +110,28 @@ public class PersonneAdapter extends BaseAdapter {
         btDel.setBackgroundColor(Color.TRANSPARENT);
         //   btDel.setBackgroundColor(Color.GREEN);
 
+        LinearLayout vertical = new LinearLayout(context);
+        vertical.setOrientation(LinearLayout.VERTICAL);
 
         LinearLayout lbLL = new LinearLayout(context);
         lbLL.setLayoutParams(lp);
         lbLL.addView(btDel);
         //   lbLL.setBackgroundColor(Color.RED);
         TextView tv = new TextView(context);
+        TextView numtel = new TextView(context);
+        TextView email = new TextView(context);
+        numtel.setText(p.getTelephone());
+        email.setText(p.getEmail());
         tv.setText(p.getNom() + " " + p.getPrenom());
         tv.setTextSize(25);
-        tv.setLayoutParams(ltt);
+        vertical.setLayoutParams(ltt);
         final RelativeLayout LL = new RelativeLayout(context);
         //    LL.setLayoutParams(lp);
+        vertical.addView(tv);
+        vertical.addView(numtel);
+        vertical.addView(email);
         LL.addView(iv);
-        LL.addView(tv);
+        LL.addView(vertical);
         LL.addView(lbLL);
         buttons.add(btDel);
 

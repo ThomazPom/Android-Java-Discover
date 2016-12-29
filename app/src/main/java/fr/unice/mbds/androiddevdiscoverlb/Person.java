@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import utils.CallAPI;
 /**
  * Created by Clem on 21/10/2016.
  */
-public class Person {
+public class Person  implements Serializable{
 
     //public static HashMap<String,HashMap<String,String>> clients = new  HashMap<String,HashMap<String,String>>();
     private String email = "[NO EMAIL]";
@@ -29,6 +30,7 @@ public class Person {
     private Boolean connected = false;
     private Boolean buzze = false;
     private String id = "";
+    private transient JSONObject jsonOfPerson;
 
     public String getNom() {
         return nom;
@@ -124,7 +126,9 @@ public class Person {
     "updatedAt": "2016-11-16T09:32:36.448Z",
     "id": "582c27b4b549726b71281a52"
 */
+
         Log.d("JSON2PERSON", input.toString());
+        setJsonOfPerson(input);
         try {
             this.prenom = input.getString("prenom");
         } catch (JSONException e) {
@@ -210,7 +214,7 @@ public class Person {
     }
 
     public void delete(final Context context) {
-        new CallAPI("http://95.142.161.35:1337/person/" + id, new CallAPI.CallbackClass() {
+        new CallAPI("http://95.142.161.35:8080/person/" + id, new CallAPI.CallbackClass() {
             @Override
             public void postCall(JSONArray result) {
                 if (result != null) {
@@ -226,7 +230,7 @@ public class Person {
 
 
         for (Person p : persons) {
-            new CallAPI("http://95.142.161.35:1337/person/" + p.id, new CallAPI.CallbackClass() {
+            new CallAPI("http://95.142.161.35:8080/person/" + p.id, new CallAPI.CallbackClass() {
                 @Override
                 public void postCall(JSONArray result) {
                     if (result != null) {
@@ -245,5 +249,13 @@ public class Person {
 
     public void setBuzze(Boolean buzze) {
         this.buzze = buzze;
+    }
+
+    public JSONObject getJsonOfPerson() {
+        return jsonOfPerson;
+    }
+
+    public void setJsonOfPerson(JSONObject jsonOfPerson) {
+        this.jsonOfPerson = jsonOfPerson;
     }
 }
