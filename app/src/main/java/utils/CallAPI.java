@@ -1,11 +1,13 @@
 package utils;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Looper;
 import android.util.JsonReader;
 import android.util.Log;
 import android.widget.Toast;
@@ -56,8 +58,6 @@ public class CallAPI extends AsyncTask<String, String, JSONArray> {
     public static abstract class CallbackClass {
         public abstract void postCall(JSONArray result);
     }
-
-
     public CallAPI(String urlString, CallbackClass callback
             , HashMap<String, Object> postDataParam, Context context) {
 
@@ -129,6 +129,7 @@ public class CallAPI extends AsyncTask<String, String, JSONArray> {
                     return jarr;
             }
         }
+
         return getDataFromURL(urlString);
     }
 

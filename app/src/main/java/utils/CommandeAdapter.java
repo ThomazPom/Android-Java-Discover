@@ -100,6 +100,7 @@ public class CommandeAdapter extends BaseAdapter {
         vertical.setOrientation(LinearLayout.VERTICAL);
 
         TextView tv = new TextView(context);
+
         tv.setText(c.getServeur().getNom()+" "+c.getServeur().getPrenom()+", "+c.getPlats().size()+" plats" );
         tv.setTextSize(25);
 

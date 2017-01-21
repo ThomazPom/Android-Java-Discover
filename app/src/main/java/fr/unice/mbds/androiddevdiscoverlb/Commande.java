@@ -27,6 +27,8 @@ public class Commande implements Serializable {
         this.plats = plats;
     }
 
+
+
     public static void deleteCommande(final String idCommande)
     {
         new CallAPI("http://95.142.161.35:8080/menu/"+idCommande, new CallAPI.CallbackClass() {

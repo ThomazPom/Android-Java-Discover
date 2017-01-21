@@ -171,7 +171,12 @@ public class ServeursActivity extends AppCompatActivity {
                     }
 
                     Log.d("forperson", "size" + persons.size());
-                    adapter = new PersonneAdapter(ServeursActivity.this, persons, deleteModeOn);
+                    adapter = new PersonneAdapter(ServeursActivity.this, persons, deleteModeOn, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    });
                     lst.setAdapter(adapter);
                     return;
                 }

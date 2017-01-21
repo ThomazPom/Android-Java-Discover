@@ -1,102 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context="fr.unice.mbds.androiddevdiscoverlb.ActivityCommande">
 
-    <android.support.design.widget.AppBarLayout
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        android:background="?android:attr/colorAccent">
+        android:layout_height="wrap_content">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="?android:attr/actionBarSize"
+            app:srcCompat="@mipmap/rewind_button"
+            android:id="@+id/imb_finish"
+            android:layout_weight="1"
+            android:background="@android:color/transparent" />
 
-    </android.support.design.widget.AppBarLayout>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="?android:attr/actionBarSize"
+            app:srcCompat="@mipmap/button_valid"
+            android:id="@+id/imb_valid"
+            android:layout_weight="1"
+            android:background="@android:color/transparent" />
 
-    <include layout="@layout/content_activity_commande" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@mipmap/button_add"
+            android:id="@+id/imb_add"
+            android:layout_weight="1"
+            android:background="@android:color/transparent" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email"
-        app:fabSize="mini"
-        app:borderWidth="0dp"
-        app:backgroundTint="@android:color/white" />
+    </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="100dp"
-        android:clickable="true"
-        app:fabSize="mini"
-        app:srcCompat="@mipmap/button_valid"
-        android:id="@+id/fab_valid"
-        app:backgroundTint="@android:color/white"
-        app:layout_anchor="@+id/reCommandMainLayout"
-        app:layout_anchorGravity="bottom|center_horizontal"
-        android:layout_gravity="top|center_horizontal"
-        android:layout_height="100dp"
-        android:layout_margin="@dimen/fab_margin" />
-
-    <RelativeLayout
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/reCommandMainLayout"
-        app:backgroundTint="@android:color/white"
-        android:layout_marginTop="55dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:id="@+id/listViewAddPlat"
+        android:backgroundTint="@android:color/background_light"
+        android:layout_weight="1" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="0dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
-            android:id="@+id/reListPlatsLayout"
-            android:elevation="24dp"
-            android:background="@android:color/white"
-            android:layout_margin="0dp">
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/listViewPlatCommande"
+        android:backgroundTint="@android:color/white"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_weight="1" />
 
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/listViewAddPlat"
-                android:backgroundTint="@android:color/background_light"
-                android:elevation="21dp" />
-        </RelativeLayout>
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_width"
+        android:indeterminate="true"
+        android:id="@+id/progressBar_sendcommand"
+        android:visibility="gone" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/reCommandListLayout"
-            android:layout_alignParentTop="true"
-            android:layout_alignLeft="@+id/reListPlatsLayout"
-            android:layout_alignStart="@+id/reListPlatsLayout">
-
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/listViewPlatCommande"
-                android:elevation="0dp"
-                android:backgroundTint="@android:color/white"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-        </RelativeLayout>
-
-    </RelativeLayout>
-
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -40,17 +41,16 @@ public class PersonneAdapter extends BaseAdapter {
     private RelativeLayout.LayoutParams ltt;
     public List<ImageButton> buttons;
     private Boolean showButtons;
+    private OnClickListener onClickListElem;
 
-
-    public PersonneAdapter(Context context, List<Person> person, Boolean showButtons) {
+    public PersonneAdapter(Context context, List<Person> person, Boolean showButtons, OnClickListener onclickListElem) {
         this.showButtons = showButtons;
         buttons = new ArrayList<>();
         this.context = context;
         this.person = person;
         ltt = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         ltt.setMargins(130, 25, 0, 0);
-
-
+        this.onClickListElem = onclickListElem;
         lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
@@ -134,12 +134,13 @@ public class PersonneAdapter extends BaseAdapter {
         LL.addView(vertical);
         LL.addView(lbLL);
         buttons.add(btDel);
-
+        vertical.setTag(p);
+        vertical.setOnClickListener(onClickListElem);
 
 
         btDel.setVisibility(showButtons ? View.VISIBLE : View.INVISIBLE);
 
-        btDel.setOnClickListener(new View.OnClickListener() {
+        btDel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(final View v) {
                 new AlertDialog.Builder(context)

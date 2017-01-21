@@ -46,11 +46,10 @@ import static org.apache.commons.io.IOUtils.copy;
 public class PlatAdapter extends BaseAdapter {
 
 
-    private final RelativeLayout.LayoutParams lp;
     private Context context;
     public List<Plats> plats;
     private RelativeLayout.LayoutParams imglayout;
-    private RelativeLayout.LayoutParams ltt;
+    private LinearLayout.LayoutParams ltt;
     public List<ImageButton> buttons;
     private Boolean addRemove;
     public View.OnClickListener buttonClickListener;
@@ -62,17 +61,12 @@ public class PlatAdapter extends BaseAdapter {
         buttons = new ArrayList<>();
         this.context = context;
         this.plats = plats;
-        ltt = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        ltt.setMargins(130, 25, 0, 0);
+        ltt = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ltt.setMargins(10, 10, 10, 10);
 
 
-        lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
-
-        imglayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 250);
-        imglayout.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-
+        imglayout = new RelativeLayout.LayoutParams(200, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     @Override
@@ -135,7 +129,6 @@ public class PlatAdapter extends BaseAdapter {
         //   lbLL.setBackgroundColor(Color.RED);
 
         final ImageView photo = new ImageView(context);
-        photo.setLayoutParams(imglayout);
         final  PlatAdapter pad =this;
 
         photo.setImageBitmap(p.getBitmap());
@@ -145,6 +138,7 @@ public class PlatAdapter extends BaseAdapter {
         LinearLayout vertical = new LinearLayout(context);
 
         LinearLayout horizontal = new LinearLayout(context);
+
 
         vertical.setLayoutParams(ltt);
         vertical.setOrientation(LinearLayout.VERTICAL);
@@ -167,19 +161,18 @@ public class PlatAdapter extends BaseAdapter {
         tv3.setTextSize(15);
         vertical.addView(tv3);
 
-        vertical.addView(photo);
+        //vertical.addView(photo);
 
 
-        final RelativeLayout LL = new RelativeLayout(context);
-        //    LL.setLayoutParams(lp);
+        final LinearLayout LL = new LinearLayout(context);
+        photo.setLayoutParams(imglayout);
         LL.addView(btAdd);
         LL.addView(btDel);
-
+        LL.addView(photo);
         LL.addView(vertical);
-        // LL.addView(iv);
-
 
         buttons.add(btAdd);
+        vertical.setLayoutParams(ltt);
 
 
         btAdd.setVisibility(addRemove ? View.VISIBLE : View.GONE);

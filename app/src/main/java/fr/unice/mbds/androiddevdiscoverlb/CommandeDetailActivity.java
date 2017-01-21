@@ -1,15 +1,29 @@
 package fr.unice.mbds.androiddevdiscoverlb;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
+import android.widget.ListView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import utils.CallAPI;
+import utils.PersonneAdapter;
 
 /**
  * An activity representing a single Commande detail screen. This
@@ -19,6 +33,7 @@ import android.view.MenuItem;
  */
 public class CommandeDetailActivity extends AppCompatActivity {
 
+    private Boolean serverListViewVisible = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,12 +41,100 @@ public class CommandeDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_change_command_server);
+        final ListView platsListView = (ListView) findViewById(R.id.commande_plats_container);
+
+        final ListView serversListView = (ListView) findViewById(R.id.commande_server);
+        serversListView.setVisibility(serverListViewVisible?View.VISIBLE:View.GONE);
+        platsListView.setVisibility(serverListViewVisible?View.GONE:View.VISIBLE);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_change_command_server);
+
+        FloatingActionButton fab_delete_command = (FloatingActionButton) findViewById(R.id.fab_delete_command);
+
+        if (fab_delete_command != null) {
+            fab_delete_command.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View view) {
+                    Commande.deleteCommande(CommandeDetailFragment.myCommand.getIdcommande());
+                   Snackbar sb=  Snackbar.make(view, "La commande a été supprimée", Snackbar.LENGTH_LONG);
+                           sb.setAction("Action", null).show();
+                    sb.setCallback(new Snackbar.Callback() {
+                        @Override
+                        public void onShown(Snackbar snackbar) {
+                            finish();
+                        }
+                    });
+
+                }
+            });
+        }
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                serverListViewVisible = !serverListViewVisible;
+                serversListView.setVisibility(serverListViewVisible?View.VISIBLE:View.GONE);
+                platsListView.setVisibility(serverListViewVisible?View.GONE:View.VISIBLE);
+                fab.setImageResource(serverListViewVisible?R.mipmap.rewind_button:R.mipmap.profile2);
+                final Context CommandeDetailActivityContext = CommandeDetailActivity.this;
+                Log.d("fabClicked","fab_change_command_server 1");
+               // if(true)return;
+                if(serverListViewVisible)
+                {
+
+                    Log.d("fabClicked","fab_change_command_server 2");
+                    new CallAPI("http://95.142.161.35:8080/person/?connected=true", new CallAPI.CallbackClass() {
+                        @Override
+                        public void postCall(JSONArray result) {
+
+                            Log.d("fabClicked","fab_change_command_server 3");
+                            List<Person> persons = new ArrayList<Person>();
+                            for (int i = 0; i < result.length(); i++) {
+                                try {
+                                    persons.add(new Person(result.getJSONObject(i)));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            Log.d("size", String.valueOf(persons.size()));
+
+                             serversListView.setAdapter(new PersonneAdapter(CommandeDetailActivityContext, persons, false, new View.OnClickListener() {
+                                @Override
+                                public void onClick(final View v) {
+                                    final Person p = (Person) v.getTag();
+                                    Log.d("Change server command",p.getNom());
+                                    CommandeDetailFragment.myCommand.setServeur(p);
+                                    HashMap<String,Object> commande =new HashMap<>();
+                                    JSONArray commandItems = new JSONArray();
+                                    for (Plats plat : CommandeDetailFragment.myCommand.getPlats())
+                                    {
+                                        commandItems.put(plat.reConstructJson());
+                                    }
+                                    commande.put("items",commandItems);
+
+                                    commande.put("server",CommandeDetailFragment.myCommand.getServeur().getJsonOfPerson());
+                                    new CallAPI("http://95.142.161.35:8080/menu/"+CommandeDetailFragment.myCommand.getIdcommande(),new CallAPI.CallbackClass() {
+                                        @Override
+                                        public void postCall(JSONArray result) {
+
+                                            Snackbar.make(v, "La commande est assignée à " + p.getPrenom()+" "+p.getNom(), 4000)
+                                                    .setAction("Action", null).show();
+                                            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+                                            if (appBarLayout != null) {
+                                                appBarLayout.setTitle(p.getPrenom()+" "+p.getNom());
+                                            }
+
+                                        }
+                                    },commande,CommandeDetailActivityContext).execute("PUT");
+
+
+                                }
+                            }));
+
+
+                        }
+                    },new HashMap<String, Object>(),CommandeDetailActivity.this).execute("GET");
+                }
+
             }
         });
 

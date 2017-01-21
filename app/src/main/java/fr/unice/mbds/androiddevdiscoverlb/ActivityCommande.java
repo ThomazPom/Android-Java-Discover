@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -29,7 +30,8 @@ import utils.PlatAdapter;
 public class ActivityCommande extends AppCompatActivity {
 
     Boolean addPlatVisible = false;
-    private RelativeLayout reListPlatsLayout;
+    private ListView reListAddPlatsLayout;
+    private ListView reListRemPlatsLayout;
     private PlatAdapter adapterListCommande;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,30 +40,41 @@ public class ActivityCommande extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        ImageButton imb_add = (ImageButton) findViewById(R.id.imb_add);
 
-        final FloatingActionButton fab_valid = (FloatingActionButton) findViewById(R.id.fab_valid);
+        final ImageButton imb_finish = (ImageButton) findViewById(R.id.imb_finish);
 
-        reListPlatsLayout = (RelativeLayout) findViewById(R.id.reListPlatsLayout);
+        final ImageButton imb_valid = (ImageButton) findViewById(R.id.imb_valid);
 
-        reListPlatsLayout.setVisibility(addPlatVisible ? View.VISIBLE : View.GONE);
-        fab.setImageDrawable(null);
-        fab.setImageResource(R.mipmap.button_add);
-        fab.setOnClickListener(new View.OnClickListener() {
+        reListAddPlatsLayout = (ListView) findViewById(R.id.listViewAddPlat);
+        reListRemPlatsLayout = (ListView) findViewById(R.id.listViewPlatCommande);
+
+        reListAddPlatsLayout.setVisibility(addPlatVisible ? View.VISIBLE : View.GONE);
+        reListRemPlatsLayout.setVisibility(addPlatVisible ? View.GONE : View.VISIBLE);
+        imb_finish.setVisibility(addPlatVisible ? View.GONE : View.VISIBLE);
+        imb_finish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        imb_add.setImageResource(R.mipmap.button_add);
+        imb_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 addPlatVisible = !addPlatVisible;
-
-                reListPlatsLayout.setVisibility(addPlatVisible ? View.VISIBLE : View.GONE);
-                fab_valid.setVisibility(addPlatVisible ?   View.GONE:View.VISIBLE);
-                FloatingActionButton me = (FloatingActionButton) view;
+                reListAddPlatsLayout.setVisibility(addPlatVisible ? View.VISIBLE : View.GONE);
+                reListRemPlatsLayout.setVisibility(addPlatVisible ? View.GONE : View.VISIBLE);
+                imb_finish.setVisibility(addPlatVisible ? View.GONE : View.VISIBLE);
+                imb_valid.setVisibility(addPlatVisible ?   View.GONE:View.VISIBLE);
+                ImageButton me = (ImageButton) view;
                 me.setImageResource(addPlatVisible ? R.mipmap.rewind_button : R.mipmap.button_add);
 
 
             }
         });
 
-        fab_valid.setOnClickListener(new View.OnClickListener() {
+        imb_valid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
                 new AlertDialog.Builder(ActivityCommande.this)
@@ -78,10 +91,13 @@ public class ActivityCommande extends AppCompatActivity {
                                 }
                                 commande.put("items",commandItems);
                                 commande.put("server",connexionActivity.userConnected.getJsonOfPerson());
+
+                                findViewById(R.id.progressBar_sendcommand).setVisibility(View.VISIBLE);
                                 new  CallAPI("http://95.142.161.35:8080/menu/",new CallAPI.CallbackClass() {
                                     @Override
                                     public void postCall(JSONArray result) {
 
+                                        findViewById(R.id.progressBar_sendcommand).setVisibility(View.GONE);
                                             Snackbar.make(view, "La commande est envoyée !", 4000)
                                                     .setAction("Action", null).show();
                                             adapterListCommande.plats.removeAll(adapterListCommande.plats);
