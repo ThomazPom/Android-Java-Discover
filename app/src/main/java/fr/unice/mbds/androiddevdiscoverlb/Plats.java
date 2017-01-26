@@ -17,7 +17,7 @@ import utils.CallAPI;
  * Created by Thoma on 21/11/2016.
  */
 
-public class Plats implements Serializable{
+public class Plats implements Serializable {
     /*
     "name": "12-volt Lith-ion Drill W/ Bonus Case & 150-piece Socket Set",
             "description": "Lorem ipsum"
@@ -32,14 +32,14 @@ public class Plats implements Serializable{
 
             */
 
-    private String name ="NO NAME";
-    private String description ="NO NAME";
+    private String name = "NO NAME";
+    private String description = "NO NAME";
     private int price = 0;
-    private int calories =0;
-    private String type ="NO TYPE";
-    private String picture ="NO PIC";
-    private int discount =0;
-    private String id ="NO ID";
+    private int calories = 0;
+    private String type = "NO TYPE";
+    private String picture = "NO PIC";
+    private int discount = 0;
+    private String id = "NO ID";
     private transient JSONObject jsonOfPlat;
 
     public Plats(String name, String description, int price, int calories, String type, String picture, int discount) {
@@ -50,20 +50,22 @@ public class Plats implements Serializable{
         this.type = type;
         this.picture = picture;
         this.discount = discount;
+    }
+    public Plats(){
 
     }
 
     public JSONObject reConstructJson() {
         jsonOfPlat = new JSONObject();
         try {
-            jsonOfPlat.put("name",name);
-            jsonOfPlat.put("price",price);
-            jsonOfPlat.put("description",description);
-            jsonOfPlat.put("calories",calories);
-            jsonOfPlat.put("type",type);
-            jsonOfPlat.put("picture",picture);
-            jsonOfPlat.put("discount",discount);
-            jsonOfPlat.put("id",id);
+            jsonOfPlat.put("name", name);
+            jsonOfPlat.put("price", price);
+            jsonOfPlat.put("description", description);
+            jsonOfPlat.put("calories", calories);
+            jsonOfPlat.put("type", type);
+            jsonOfPlat.put("picture", picture);
+            jsonOfPlat.put("discount", discount);
+            jsonOfPlat.put("id", id);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -72,31 +74,72 @@ public class Plats implements Serializable{
     }
 
     final static int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-  private  static   LruCache<String, Bitmap> bitmapLruCache = new LruCache<>(maxMemory);
+    private static LruCache<String, Bitmap> bitmapLruCache = new LruCache<>(maxMemory);
 
-    public Plats(JSONObject jsonObject) {
+    public void pleaseComplete(final CallAPI.Callback callback) {
+        final Plats self = this;
+        if (jsonOfPlat ==null || !jsonOfPlat.has("createdAt")) {
+
+            new CallAPI("http://95.142.161.35:8080/product/" + this.id, new CallAPI.CallbackClass() {
+                @Override
+                public void postCall(JSONArray result) {
+                    try {
+                        self.construct(result.getJSONObject(0));
+                        callback.postCall(self);
+                    } catch (JSONException e) {
+                    }
+                }
+            }, new HashMap<String, Object>(), null).execute("GET");
+
+        }
+
+    }
+
+    public Plats construct(JSONObject jsonObject) {
         setJsonOfPlat(jsonObject);
+
         try {
-            this.name = jsonObject.getString("name");
+            this.id = this.jsonOfPlat.getString("id");
+        } catch (JSONException e) {
+            Log.d("Plats", "no id");
+            //e.printStackTrace();
+        }
+        if(this.jsonOfPlat.has("idProduit"))
+        {
+
+            try {
+                this.id = this.jsonOfPlat.getString("idProduit");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(!this.jsonOfPlat.has("createdAt"))
+        {/*
+            this.pleaseComplete(new CallAPI.Callback() {
+                @Override
+                public void postCall(Object returnvalue) {
+
+                }
+            });
+            */
+            return this;
+        }
+        try {
+            this.name = this.jsonOfPlat.getString("name");
         } catch (JSONException e) {
             Log.d("Plats", "no name");
             //e.printStackTrace();
         }
 
-        try {
-            this.id=jsonObject.getString("id");
-        } catch (JSONException e) {
-            Log.d("Plats","no id");
-            //e.printStackTrace();
-        }
 
         final String pid = this.id;
         try {
-            final String pict = this.picture = jsonObject.getString("picture");
+            final String pict = this.picture = this.jsonOfPlat.getString("picture");
 
-            if( getBitmap()==null) {
+            if (getBitmap() == null) {
 
-                setBitmap(Bitmap.createBitmap(1,1, Bitmap.Config.ARGB_8888));
+                setBitmap(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888));
                 new CallAPI(getPicture(), new CallAPI.CallbackClass() {
 
                     @Override
@@ -113,45 +156,40 @@ public class Plats implements Serializable{
 
             }
         } catch (JSONException e) {
-            Log.d("Plats","no picture");
+            Log.d("Plats", "no picture");
             //e.printStackTrace();
         }
         try {
-            this.description=jsonObject.getString("description");
+            this.description = this.jsonOfPlat.getString("description");
         } catch (JSONException e) {
-            Log.d("Plats","no description");
+            Log.d("Plats", "no description");
             //e.printStackTrace();
         }
         try {
-            this.price=jsonObject.getInt("price");
+            this.price = this.jsonOfPlat.getInt("price");
         } catch (JSONException e) {
-            Log.d("Plats","no price");
+            Log.d("Plats", "no price");
             //e.printStackTrace();
         }
         try {
-            this.calories=jsonObject.getInt("calories");
+            this.calories = this.jsonOfPlat.getInt("calories");
         } catch (JSONException e) {
-            Log.d("Plats","no calories");
+            Log.d("Plats", "no calories");
             //e.printStackTrace();
         }
         try {
-            this.type=jsonObject.getString("type");
+            this.type = this.jsonOfPlat.getString("type");
         } catch (JSONException e) {
-            Log.d("Plats","no type");
+            Log.d("Plats", "no type");
             //e.printStackTrace();
         }
         try {
-            this.discount=jsonObject.getInt("discount");
+            this.discount = this.jsonOfPlat.getInt("discount");
         } catch (JSONException e) {
-            Log.d("Plats","no discount");
+            Log.d("Plats", "no discount");
             //e.printStackTrace();
         }
-        try {
-            this.id=jsonObject.getString("id");
-        } catch (JSONException e) {
-            Log.d("Plats","no id");
-            //e.printStackTrace();
-        }
+        return this;
     }
 
     public String getName() {
@@ -223,11 +261,21 @@ public class Plats implements Serializable{
     }
 
     public void setBitmap(Bitmap bitmap) {
-        bitmapLruCache.put(getPicture(),bitmap);
+        bitmapLruCache.put(getPicture(), bitmap);
     }
 
     public JSONObject getJsonOfPlat() {
         return jsonOfPlat;
+    }
+
+    public JSONObject getJsonIdOfPlat() {
+        JSONObject returnJson = new JSONObject();
+        try {
+            returnJson.put("id", id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return returnJson;
     }
 
     public void setJsonOfPlat(JSONObject jsonOfPlat) {

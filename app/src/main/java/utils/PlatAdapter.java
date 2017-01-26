@@ -88,6 +88,14 @@ public class PlatAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, final ViewGroup parent) {
 
         final Plats p = plats.get(position);
+
+        final PlatAdapter self = this;
+        p.pleaseComplete(new CallAPI.Callback() {
+            @Override
+            public void postCall(Object returnvalue) {
+                self.notifyDataSetChanged();
+            }
+        });
         View v = convertView;
 
         v = View.inflate(context, R.layout.activity_serveurs, null);

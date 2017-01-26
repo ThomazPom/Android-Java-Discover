@@ -91,11 +91,11 @@ public class CommandeDetailFragment extends Fragment {
                     HashMap<String, Object> commande = new HashMap<>();
                     JSONArray commandItems = new JSONArray();
                     for (Plats p : adapter.plats) {
-                        commandItems.put(p.reConstructJson());
+                        commandItems.put(p.getJsonIdOfPlat());
                     }
                     commande.put("items", commandItems);
 
-                    commande.put("server", myCommand.getServeur().getJsonOfPerson());
+                    commande.put("server", myCommand.getServeur().getJsonIdOfPerson());
                     new CallAPI("http://95.142.161.35:8080/menu/" + myCommand.getIdcommande(), new CallAPI.CallbackClass() {
                         @Override
                         public void postCall(JSONArray result) {

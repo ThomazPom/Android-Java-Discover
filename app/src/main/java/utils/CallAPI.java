@@ -58,6 +58,9 @@ public class CallAPI extends AsyncTask<String, String, JSONArray> {
     public static abstract class CallbackClass {
         public abstract void postCall(JSONArray result);
     }
+    public static abstract class Callback {
+        public abstract void postCall(Object returnvalue);
+    }
     public CallAPI(String urlString, CallbackClass callback
             , HashMap<String, Object> postDataParam, Context context) {
 
@@ -263,6 +266,7 @@ public class CallAPI extends AsyncTask<String, String, JSONArray> {
             Charset.forName("UTF-8")),8);
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
         String readAPIResponse = " ";
         StringBuffer jsonString = new StringBuffer();
@@ -282,9 +286,12 @@ public class CallAPI extends AsyncTask<String, String, JSONArray> {
         try {
             root = new JSONArray(jsonString.toString());
         } catch (JSONException e) {
-            e.printStackTrace();
-            Log.e("ERR",e.getMessage());
-            return null;
+            try {
+                root = new JSONArray();
+                root.put(new  JSONObject(jsonString.toString()));
+            } catch (JSONException e1) {
+                return null;
+                 }
         }
 
         return root;

@@ -47,7 +47,8 @@ public class Commande implements Serializable {
             e.printStackTrace();
         }
         try {
-            this.serveur = new Person(commande.getJSONObject("server"));
+            this.serveur = new Person().construct(commande.getJSONObject("server"));
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -62,7 +63,8 @@ public class Commande implements Serializable {
         for (int i = 0;i<jarr.length();i++)
         {
             try {
-                plats.add(new Plats(jarr.getJSONObject(i)));
+                plats.add(
+                        new Plats().construct(jarr.getJSONObject(i)));
             } catch (Exception e) {
                 e.printStackTrace();
             }

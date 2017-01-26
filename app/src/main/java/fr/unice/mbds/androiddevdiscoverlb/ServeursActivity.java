@@ -164,7 +164,7 @@ public class ServeursActivity extends AppCompatActivity {
                     Log.d("fillList", result.toString());
                     for (int i = 0; i < result.length(); i++) {
                         try {
-                            persons.add(new Person(result.getJSONObject(i)));
+                            persons.add(new Person().construct(result.getJSONObject(i)));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

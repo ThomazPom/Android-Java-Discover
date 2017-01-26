@@ -23,8 +23,8 @@ public class Person  implements Serializable{
     private String email = "[NO EMAIL]";
     private Person createdBy = null;
     private String password = "";
-    private String nom = "[NO NAME]";
-    private String prenom = "[NO FIRSTNAME]";
+    private String nom = "[User]";
+    private String prenom = "[Deleted]";
     private String sexe = "[NOT SET]";
     private String telephone = "[NO PHONE]";
     private Boolean connected = false;
@@ -112,7 +112,30 @@ public class Person  implements Serializable{
 
     }
 
-    public Person(JSONObject input) {
+
+    public void pleaseComplete(final CallAPI.Callback callback) {
+        final Person self = this;
+        if (jsonOfPerson ==null || !jsonOfPerson.has("createdAt")) {
+
+            new CallAPI("http://95.142.161.35:8080/person/" + this.id, new CallAPI.CallbackClass() {
+                @Override
+                public void postCall(JSONArray result) {
+                    try {
+                        self.construct(result.getJSONObject(0));
+                        callback.postCall(self);
+                    } catch (JSONException e) {
+                    }
+                }
+            }, new HashMap<String, Object>(), null).execute("GET");
+
+        }
+
+    }
+    public Person()
+    {
+
+    }
+    public Person construct(JSONObject input) {
 /*
     "prenom": "test",
     "nom": "test",
@@ -129,21 +152,45 @@ public class Person  implements Serializable{
 
         Log.d("JSON2PERSON", input.toString());
         setJsonOfPerson(input);
+
+
         try {
-            this.prenom = input.getString("prenom");
+            this.id = jsonOfPerson.getString("id");
+        } catch (JSONException e) {
+
+            Log.d("jsonperson", "id ,no value");
+            // e.printStackTrace();
+        }
+
+        if(!this.jsonOfPerson.has("createdAt"))
+        {
+            return this;
+        }
+            /*
+        if (!jsonOfPerson.has("createdAt"))
+        {
+            try {
+                jsonOfPerson = CallAPI.getDataFromURL("http://95.142.161.35:8080/person/"+this.id).getJSONObject(0);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+*/
+        try {
+            this.prenom = jsonOfPerson.getString("prenom");
         } catch (JSONException e) {
             Log.d("jsonperson", "prenom ,no value");
             //e.printStackTrace();
         }
         try {
-            this.nom = input.getString("nom");
+            this.nom = jsonOfPerson.getString("nom");
         } catch (JSONException e) {
 
             Log.d("jsonperson", "nom ,no value");
             //  e.printStackTrace();
         }
         try {
-            this.sexe = input.getString("sexe");
+            this.sexe = jsonOfPerson.getString("sexe");
         } catch (JSONException e) {
 
             Log.d("jsonperson", "sex ,no value");
@@ -151,14 +198,14 @@ public class Person  implements Serializable{
         }
 
         try {
-            this.email = input.getString("email");
+            this.email = jsonOfPerson.getString("email");
         } catch (JSONException e) {
 
             Log.d("jsonperson", "mail ,no value");
             //   e.printStackTrace();
         }
         try {
-            this.telephone = input.getString("telephone");
+            this.telephone = jsonOfPerson.getString("telephone");
         } catch (JSONException e) {
 
             Log.d("jsonperson", "tel ,no value");
@@ -166,7 +213,7 @@ public class Person  implements Serializable{
         }
 
         try {
-            this.setConnected(input.getBoolean("connected"));
+            this.setConnected(jsonOfPerson.getBoolean("connected"));
         } catch (JSONException e) {
 
             Log.d("jsonperson", "connected ,no value");
@@ -174,28 +221,28 @@ public class Person  implements Serializable{
         }
 
         try {
-            this.setConnected(input.getBoolean("buzze"));
+            this.setConnected(jsonOfPerson.getBoolean("buzze"));
         } catch (JSONException e) {
 
             Log.d("buzze", "connected ,no value");
             //  e.printStackTrace();
         }
         try {
-            this.id = input.getString("id");
+            this.id = jsonOfPerson.getString("id");
         } catch (JSONException e) {
 
             Log.d("jsonperson", "id ,no value");
             // e.printStackTrace();
         }
         try {
-            this.password = input.getString("password");
+            this.password = jsonOfPerson.getString("password");
         } catch (JSONException e) {
 
             Log.d("jsonperson", "pw ,no value");
             //    e.printStackTrace();
         }
         // clients.put(mail,h);
-
+        return this;
     }
 
     public Person(String email, String password) {
@@ -254,7 +301,15 @@ public class Person  implements Serializable{
     public JSONObject getJsonOfPerson() {
         return jsonOfPerson;
     }
-
+    public JSONObject getJsonIdOfPerson() {
+        JSONObject returnJson = new JSONObject();
+        try {
+            returnJson.put("id",id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return returnJson;
+    }
     public void setJsonOfPerson(JSONObject jsonOfPerson) {
         this.jsonOfPerson = jsonOfPerson;
     }

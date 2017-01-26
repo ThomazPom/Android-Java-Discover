@@ -87,10 +87,10 @@ public class ActivityCommande extends AppCompatActivity {
                                 JSONArray commandItems = new JSONArray();
                                 for (Plats p : adapterListCommande.plats)
                                 {
-                                    commandItems.put(p.getJsonOfPlat());
+                                    commandItems.put(p.getJsonIdOfPlat());
                                 }
                                 commande.put("items",commandItems);
-                                commande.put("server",connexionActivity.userConnected.getJsonOfPerson());
+                                commande.put("server",connexionActivity.userConnected.getJsonIdOfPerson());
 
                                 findViewById(R.id.progressBar_sendcommand).setVisibility(View.VISIBLE);
                                 new  CallAPI("http://95.142.161.35:8080/menu/",new CallAPI.CallbackClass() {
@@ -156,7 +156,7 @@ public class ActivityCommande extends AppCompatActivity {
                     Log.d("fillList", result.toString());
                     for (int i = 0; i < result.length(); i++) {
                         try {
-                            plats.add(new Plats(result.getJSONObject(i)));
+                            plats.add(new Plats().construct(result.getJSONObject(i)));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

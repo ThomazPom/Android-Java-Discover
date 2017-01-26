@@ -114,7 +114,7 @@ public class connexionActivity extends AppCompatActivity {
                     Log.d("postCall", String.valueOf(result));
                     try {
                         if (result.getBoolean("success")) {
-                            userConnected = new Person(result.getJSONObject("user"));
+                            userConnected = new Person().construct(result.getJSONObject("user"));
 
                             Toast.makeText(connexionActivity.this, R.string.connexion_ok, Toast.LENGTH_LONG).show();
                             final int d = Log.d("postCall(String result)", result.toString());

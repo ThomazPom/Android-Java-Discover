@@ -90,7 +90,7 @@ public class CommandeDetailActivity extends AppCompatActivity {
                             List<Person> persons = new ArrayList<Person>();
                             for (int i = 0; i < result.length(); i++) {
                                 try {
-                                    persons.add(new Person(result.getJSONObject(i)));
+                                    persons.add(new Person().construct(result.getJSONObject(i)));
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -107,11 +107,11 @@ public class CommandeDetailActivity extends AppCompatActivity {
                                     JSONArray commandItems = new JSONArray();
                                     for (Plats plat : CommandeDetailFragment.myCommand.getPlats())
                                     {
-                                        commandItems.put(plat.reConstructJson());
+                                        commandItems.put(plat.getJsonIdOfPlat());
                                     }
                                     commande.put("items",commandItems);
 
-                                    commande.put("server",CommandeDetailFragment.myCommand.getServeur().getJsonOfPerson());
+                                    commande.put("server",CommandeDetailFragment.myCommand.getServeur().getJsonIdOfPerson());
                                     new CallAPI("http://95.142.161.35:8080/menu/"+CommandeDetailFragment.myCommand.getIdcommande(),new CallAPI.CallbackClass() {
                                         @Override
                                         public void postCall(JSONArray result) {

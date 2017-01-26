@@ -73,10 +73,15 @@ public class CommandeAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
-
+        final CommandeAdapter self = this;
         final Commande c = commandes.get(position);
         View v = convertView;
-
+        c.getServeur().pleaseComplete(new CallAPI.Callback() {
+            @Override
+            public void postCall(Object returnvalue) {
+                        self.notifyDataSetChanged();
+            }
+        });
         v = View.inflate(context, R.layout.activity_serveurs, null);
 
         ImageButton iv = new ImageButton(context);
