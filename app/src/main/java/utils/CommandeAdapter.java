@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.unice.mbds.androiddevdiscoverlb.Commande;
+import fr.unice.mbds.androiddevdiscoverlb.Person;
 import fr.unice.mbds.androiddevdiscoverlb.Plats;
 import fr.unice.mbds.androiddevdiscoverlb.R;
 
@@ -76,6 +77,7 @@ public class CommandeAdapter extends BaseAdapter {
         final CommandeAdapter self = this;
         final Commande c = commandes.get(position);
         View v = convertView;
+        c.setServeur(Person.cache.get(c.getServeur().getId()));
         c.getServeur().pleaseComplete(new CallAPI.Callback() {
             @Override
             public void postCall(Object returnvalue) {

@@ -35,7 +35,7 @@ public class Person  implements Serializable{
     public String getNom() {
         return nom;
     }
-
+    public static HashMap<String, Person > cache = new HashMap<>();
     public void setNom(String nom) {
         this.nom = nom;
     }
@@ -117,7 +117,7 @@ public class Person  implements Serializable{
         final Person self = this;
         if (jsonOfPerson ==null || !jsonOfPerson.has("createdAt")) {
 
-            new CallAPI("http://95.142.161.35:8080/person/" + this.id, new CallAPI.CallbackClass() {
+            new CallAPI("http://95.142.161.35:8080/person/" + this.getId(), new CallAPI.CallbackClass() {
                 @Override
                 public void postCall(JSONArray result) {
                     try {
@@ -155,13 +155,13 @@ public class Person  implements Serializable{
 
 
         try {
-            this.id = jsonOfPerson.getString("id");
+            this.setId(jsonOfPerson.getString("id"));
         } catch (JSONException e) {
 
             Log.d("jsonperson", "id ,no value");
             // e.printStackTrace();
         }
-
+        cache.put(this.getId(),this);
         if(!this.jsonOfPerson.has("createdAt"))
         {
             return this;
@@ -228,7 +228,7 @@ public class Person  implements Serializable{
             //  e.printStackTrace();
         }
         try {
-            this.id = jsonOfPerson.getString("id");
+            this.setId(jsonOfPerson.getString("id"));
         } catch (JSONException e) {
 
             Log.d("jsonperson", "id ,no value");
@@ -261,7 +261,7 @@ public class Person  implements Serializable{
     }
 
     public void delete(final Context context) {
-        new CallAPI("http://95.142.161.35:8080/person/" + id, new CallAPI.CallbackClass() {
+        new CallAPI("http://95.142.161.35:8080/person/" + getId(), new CallAPI.CallbackClass() {
             @Override
             public void postCall(JSONArray result) {
                 if (result != null) {
@@ -277,7 +277,7 @@ public class Person  implements Serializable{
 
 
         for (Person p : persons) {
-            new CallAPI("http://95.142.161.35:8080/person/" + p.id, new CallAPI.CallbackClass() {
+            new CallAPI("http://95.142.161.35:8080/person/" + p.getId(), new CallAPI.CallbackClass() {
                 @Override
                 public void postCall(JSONArray result) {
                     if (result != null) {
@@ -304,7 +304,7 @@ public class Person  implements Serializable{
     public JSONObject getJsonIdOfPerson() {
         JSONObject returnJson = new JSONObject();
         try {
-            returnJson.put("id",id);
+            returnJson.put("id", getId());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -312,5 +312,13 @@ public class Person  implements Serializable{
     }
     public void setJsonOfPerson(JSONObject jsonOfPerson) {
         this.jsonOfPerson = jsonOfPerson;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

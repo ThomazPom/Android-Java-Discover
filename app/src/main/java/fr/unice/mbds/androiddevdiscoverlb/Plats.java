@@ -51,6 +51,8 @@ public class Plats implements Serializable {
         this.picture = picture;
         this.discount = discount;
     }
+
+    public static HashMap<String, Plats > cache = new HashMap<>();
     public Plats(){
 
     }
@@ -104,6 +106,7 @@ public class Plats implements Serializable {
             Log.d("Plats", "no id");
             //e.printStackTrace();
         }
+        cache.put(id,this);
         if(this.jsonOfPlat.has("idProduit"))
         {
 

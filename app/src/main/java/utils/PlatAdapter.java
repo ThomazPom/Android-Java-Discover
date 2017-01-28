@@ -87,7 +87,8 @@ public class PlatAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
 
-        final Plats p = plats.get(position);
+
+        final Plats p  = Plats.cache.get( plats.get(position).getId());
 
         final PlatAdapter self = this;
         p.pleaseComplete(new CallAPI.Callback() {
