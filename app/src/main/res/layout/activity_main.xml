@@ -12,77 +12,78 @@
     tools:context="fr.unice.mbds.androiddevdiscoverlb.MainActivity"
     >
 
-    <LinearLayout
-        android:orientation="vertical"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentTop="true">
+        android:layout_height="match_parent">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:id="@+id/imageView"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            app:srcCompat="@drawable/mbds"
-            android:layout_height="90dp" />
-
-        <TextView
-            android:text="Bienvenue"
-            android:layout_marginTop="23dp"
-            android:id="@+id/BienvenueField"
-            android:layout_height="40dp"
-            android:textSize="36sp"
-            android:layout_below="@+id/imageView"
-            android:layout_centerHorizontal="true"
-            android:fontFamily="sans-serif"
-            android:textStyle="normal|bold"
-            android:layout_width="match_parent"
-            android:textAlignment="center"
-            android:textColor="@android:color/holo_blue_dark" />
-
-        <TextView
-            android:text="Veulliez sélectionner &quot;s'enregister&quot; pour créer un compte ou &quot;se connecter&quot; si vous en avez déjà un."
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/BienvenueField"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="26dp"
-            android:id="@+id/textView2"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textAlignment="center" />
+            android:orientation="vertical" >
 
-        <Button
-            android:text="S'enregister"
-            android:id="@+id/buttonSenregister"
-            android:layout_width="match_parent"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:background="@drawable/mybutton"
-            android:textAllCaps="false"
-            android:fontFamily="sans-serif-medium"
-            android:layout_height="40dp"
-            android:layout_marginTop="77dp"
-            android:layout_below="@+id/textView2"
-            android:layout_centerHorizontal="true"
-            android:onClick="onClickEnregistrer"/>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
 
-        <Button
-            android:text="Se connecter"
-            android:id="@+id/buttonSeconecter"
-            android:layout_width="match_parent"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:background="@drawable/mybutton"
-            android:textAllCaps="false"
-            android:fontFamily="sans-serif-medium"
-            android:layout_height="40dp"
-            android:layout_marginTop="12dp"
-            android:onClick="onClickConnexion"/>
-    </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:id="@+id/imageView"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                app:srcCompat="@drawable/mbds"
+                android:layout_height="90dp" />
+
+            <TextView
+                android:text="Bienvenue"
+                android:layout_marginTop="23dp"
+                android:id="@+id/BienvenueField"
+                android:layout_height="40dp"
+                android:textSize="36sp"
+                android:layout_below="@+id/imageView"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="sans-serif"
+                android:textStyle="normal|bold"
+                android:layout_width="match_parent"
+                android:textAlignment="center"
+                android:textColor="@android:color/holo_blue_dark" />
+
+            <TextView
+                android:text="Veulliez sélectionner &quot;s'enregister&quot; pour créer un compte ou &quot;se connecter&quot; si vous en avez déjà un."
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/BienvenueField"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="26dp"
+                android:id="@+id/textView2"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textAlignment="center" />
+
+            <Button
+                android:text="S'enregister"
+                android:id="@+id/buttonSenregister"
+                android:layout_width="match_parent"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:background="@drawable/mybutton"
+                android:textAllCaps="false"
+                android:fontFamily="sans-serif-medium"
+                android:layout_height="40dp"
+                android:layout_marginTop="77dp"
+                android:layout_below="@+id/textView2"
+                android:layout_centerHorizontal="true"
+                android:onClick="onClickEnregistrer"/>
+
+            <Button
+                android:text="Se connecter"
+                android:id="@+id/buttonSeconecter"
+                android:layout_width="match_parent"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:background="@drawable/mybutton"
+                android:textAllCaps="false"
+                android:fontFamily="sans-serif-medium"
+                android:layout_height="40dp"
+                android:layout_marginTop="12dp"
+                android:onClick="onClickConnexion"/>
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>
